@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-rose-gold: #e8c4b0;
+  --color-rose-gold-dark: #d4a088;
+  --color-rose-gold-light: #f0d5c5;
+
+  --color-gold: #b8860b;
+  --color-gold-dark: #8b6914;
+  --color-gold-light: #d4a030;
+
+  --color-brown: #5c3d2e;
+  --color-brown-dark: #3e2723;
+  --color-brown-light: #8b7355;
+
+  --color-beige: #f5f0eb;
+  --color-beige-dark: #e0d5c8;
+  --color-beige-light: #faf6f1;
+}

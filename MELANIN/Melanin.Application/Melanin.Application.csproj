@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Melanin.Domain\Melanin.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\Utils\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Soenneker.Hashing.Argon2" Version="4.0.702" />
+  </ItemGroup>
+
+</Project>

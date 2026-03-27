@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/Application/">
+    <Project Path="Melanin.Application/Melanin.Application.csproj" Id="fe1248d9-d869-4b08-8bcc-35aaff0024be" />
+  </Folder>
+  <Folder Name="/Domain/">
+    <Project Path="Melanin.Domain/Melanin.Domain.csproj" Id="0cb246a6-45c6-4f91-a2c3-9e828392784b" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="Melanin.Infrastructure.Mailer/Melanin.Infrastructure.Mailer.csproj" Id="3eaecc12-b400-411f-bebb-9f7f506dbe06" />
+    <Project Path="Melanin.Infrastructure/Melanin.Infrastructure.Database.csproj" Id="3e922ab2-e9af-4fd8-8f4d-78742b0f9f96" />
+  </Folder>
+  <Folder Name="/Presentation/">
+    <Project Path="Melanin.API/Melanin.API.csproj" Id="f9c8c06d-8d20-45e4-ac7a-c604041d513d" />
+  </Folder>
+</Solution>
