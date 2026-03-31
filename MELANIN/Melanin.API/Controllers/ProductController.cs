@@ -167,6 +167,10 @@ public class ProductController : ControllerBase
         {
             return BadRequest(new { ex.Message });
         }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { ex.Message });
+        }
     }
 
     [HttpDelete("{id}")]
