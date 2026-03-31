@@ -295,7 +295,6 @@ namespace Melanin.Infrastructure.Database.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("HairColor")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
