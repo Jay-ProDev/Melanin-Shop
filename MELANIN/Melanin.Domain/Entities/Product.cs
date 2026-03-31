@@ -1,4 +1,5 @@
-﻿using Melanin.Domain.Enums;
+﻿using Melanin.Domain.BusinessExecptions;
+using Melanin.Domain.Enums;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
@@ -96,7 +97,7 @@ namespace Melanin.Domain.Entities
                 throw new ArgumentException("La quantité doit être positive", nameof(quantity));
 
             if (StockQuantity - quantity < 0)
-                throw new ArgumentException("Stock insuffisant", nameof(quantity));
+                throw new ProductOutOfStockException(Name);
 
             StockQuantity -= quantity;
         }
