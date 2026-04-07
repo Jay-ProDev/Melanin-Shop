@@ -6,11 +6,19 @@ export default function ProductCard({ product }) {
       to={`/product/${product.id}`}
       className="group block bg-white dark:bg-zinc-900 border border-beige-dark dark:border-zinc-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
     >
-      {/* Image placeholder */}
-      <div className="aspect-square bg-beige dark:bg-zinc-800 flex items-center justify-center">
-        <span className="text-brown/40 dark:text-rose-gold/40 text-sm tracking-widest uppercase">
-          Photo
-        </span>
+      {/* Image */}
+      <div className="aspect-square bg-beige dark:bg-zinc-800 flex items-center justify-center overflow-hidden">
+        {product.imageUrl ? (
+          <img
+            src={`${import.meta.env.VITE_API_URL.replace("/api", "")}${product.imageUrl}`}
+            alt={product.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        ) : (
+          <span className="text-brown/40 dark:text-rose-gold/40 text-sm tracking-widest uppercase">
+            Photo
+          </span>
+        )}
       </div>
 
       {/* Infos */}

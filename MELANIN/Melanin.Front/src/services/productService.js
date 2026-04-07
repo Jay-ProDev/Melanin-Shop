@@ -178,6 +178,29 @@ export async function deactivateProduct(id) {
   };
 }
 
+export async function uploadProductImage(id, file) {
+  let response;
+  try {
+    const token = store.get(tokenAtom);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    response = await axios.post(`/Product/${id}/image`, formData, {
+      baseURL: import.meta.env.VITE_API_URL,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  } catch (error) {
+    return {
+      success: false,
+      error: error.response?.data?.message ?? error.message,
+    };
+  }
+  return {
+    success: true,
+    data: response.data,
+  };
+}
+
 export async function increaseStock(id, quantity) {
   let response;
   try {
