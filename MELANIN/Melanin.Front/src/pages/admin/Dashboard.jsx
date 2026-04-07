@@ -132,10 +132,18 @@ export default function Dashboard() {
                   {/* Miniature + Nom */}
                   <td className="py-4 pr-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded bg-beige dark:bg-zinc-800 flex items-center justify-center shrink-0">
-                        <span className="text-brown/30 dark:text-rose-gold/30 text-[8px]">
-                          IMG
-                        </span>
+                      <div className="w-10 h-10 rounded bg-beige dark:bg-zinc-800 flex items-center justify-center shrink-0 overflow-hidden">
+                        {p.imageUrl ? (
+                          <img
+                            src={`${import.meta.env.VITE_API_URL.replace("/api", "")}${p.imageUrl}`}
+                            alt={p.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-brown/30 dark:text-rose-gold/30 text-[8px]">
+                            IMG
+                          </span>
+                        )}
                       </div>
                       <span className="text-brown dark:text-rose-gold font-medium">
                         {p.name}
@@ -161,7 +169,7 @@ export default function Dashboard() {
                       >
                         −
                       </button>
-                      <span className="text-brown dark:text-rose-gold w-8 text-center text-xs">
+                      <span className="text-brown dark:text-rose-gold kw-8 text-center text-xs">
                         {p.stockQuantity}
                       </span>
                       <button

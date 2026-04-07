@@ -9,6 +9,7 @@ namespace Melanin.API.DTO.Response
         public string Description { get; set; } = default!;
         public decimal UnitPrice { get; set; }
         public int StockQuantity { get; set; }
+        public string? ImageUrl { get; set; }
         public bool IsActive { get; set; }
         public string? HairColor { get; set; }
         public HairLength? HairLength { get; set; }

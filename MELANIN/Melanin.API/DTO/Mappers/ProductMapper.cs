@@ -16,6 +16,7 @@ internal static class ProductMapper
             Description = product.Description,
             UnitPrice = product.UnitPrice,
             StockQuantity = product.StockQuantity,
+            ImageUrl = product.ImageUrl,
             IsActive = product.IsActive,
             HairColor = product.HairColor,
             HairLength = product.HairLength,

@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { createProduct } from "../../services/productService";
+import {
+  createProduct,
+  uploadProductImage,
+} from "../../services/productService";
 import { getAllCategories } from "../../services/categoryService";
 
 const HAIR_LENGTHS = [
@@ -61,13 +64,26 @@ export default function CreateProduct() {
     };
 
     const result = await createProduct(productData);
-    setLoading(false);
 
-    if (result.success) {
-      navigate("/admin");
-    } else {
+    if (!result.success) {
+      setLoading(false);
       setError(result.error);
+      return;
     }
+
+    // Upload image si un fichier a été sélectionné
+    const imageFile = formData.get("image");
+    if (imageFile && imageFile.size > 0) {
+      const imageResult = await uploadProductImage(result.data.id, imageFile);
+      if (!imageResult.success) {
+        setLoading(false);
+        setError(imageResult.error);
+        return;
+      }
+    }
+
+    setLoading(false);
+    navigate("/admin");
   }
 
   return (
@@ -227,6 +243,19 @@ export default function CreateProduct() {
               </option>
             ))}
           </select>
+        </div>
+
+        {/* Image */}
+        <div>
+          <label className="block text-xs tracking-widest uppercase text-brown/60 dark:text-rose-gold/60 mb-1">
+            Image du produit
+          </label>
+          <input
+            type="file"
+            name="image"
+            accept=".jpg,.jpeg,.png,.webp"
+            className="w-full text-sm text-brown dark:text-rose-gold file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:tracking-widest file:uppercase file:bg-brown/10 dark:file:bg-rose-gold/10 file:text-brown dark:file:text-rose-gold hover:file:opacity-80 file:cursor-pointer file:transition-opacity"
+          />
         </div>
 
         {/* Boutons */}

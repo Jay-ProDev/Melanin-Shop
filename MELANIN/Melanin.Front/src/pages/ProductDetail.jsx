@@ -60,11 +60,19 @@ export default function ProductDetail() {
       </Link>
 
       <div className="flex flex-col md:flex-row gap-10">
-        {/* Image placeholder */}
-        <div className="md:w-1/2 aspect-square bg-beige dark:bg-zinc-800 rounded-lg flex items-center justify-center">
-          <span className="text-brown/40 dark:text-rose-gold/40 text-sm tracking-widest uppercase">
-            Photo
-          </span>
+        {/* Image */}
+        <div className="md:w-1/2 aspect-square bg-beige dark:bg-zinc-800 rounded-lg flex items-center justify-center overflow-hidden">
+          {product.imageUrl ? (
+            <img
+              src={`${import.meta.env.VITE_API_URL.replace("/api", "")}${product.imageUrl}`}
+              alt={product.name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span className="text-brown/40 dark:text-rose-gold/40 text-sm tracking-widest uppercase">
+              Photo
+            </span>
+          )}
         </div>
 
         {/* Infos produit */}

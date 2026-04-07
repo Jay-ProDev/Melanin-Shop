@@ -131,6 +131,58 @@ public class ProductController : ControllerBase
         }
     }
 
+    [HttpPost("{id}/image")]
+    [EndpointSummary("Upload une image pour un produit")]
+    public async Task<IActionResult> UploadImage(int id, IFormFile file)
+    {
+        try
+        {
+            if (file is null || file.Length == 0)
+                return BadRequest(new { Message = "Aucun fichier envoyé." });
+
+            if (file.Length > 5 * 1024 * 1024)
+                return BadRequest(new { Message = "Le fichier ne doit pas dépasser 5 Mo." });
+
+            string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
+            string fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+            if (!allowedExtensions.Contains(fileExtension))
+                return BadRequest(new { Message = "Format non supporté (jpg, jpeg, png, webp uniquement)." });
+
+            Product product = await _productService.GetByIdAsync(id);
+
+            // Supprimer l'ancienne image si elle existe
+            if (!string.IsNullOrEmpty(product.ImageUrl))
+            {
+                string oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", product.ImageUrl.TrimStart('/'));
+                if (System.IO.File.Exists(oldImagePath))
+                    System.IO.File.Delete(oldImagePath);
+            }
+
+            // Sauvegarder le nouveau fichier
+            string imageName = $"{id}_{Guid.NewGuid()}{fileExtension}";
+            string imageFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "products");
+
+            if (!Directory.Exists(imageFolder))
+                Directory.CreateDirectory(imageFolder);
+
+            string imagePath = Path.Combine(imageFolder, imageName);
+            using (FileStream stream = new FileStream(imagePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            product.SetImageUrl($"/images/products/{imageName}");
+            await _productService.UpdateAsync(product);
+
+            return Ok(new { Message = "Image uploadée avec succès", ImageUrl = product.ImageUrl });
+        }
+        catch (ProductNotFoundException ex)
+        {
+            return NotFound(new { ex.Message });
+        }
+    }
+
     [HttpPut("{id}/stock/increase")]
     [EndpointSummary("Réapprovisionner le stock")]
     public async Task<IActionResult> IncreaseStock(int id, [FromBody] UpdateStockDTO dto)

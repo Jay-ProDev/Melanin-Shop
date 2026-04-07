@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
-import { getProductById, updateProduct } from "../../services/productService";
+import {
+  getProductById,
+  updateProduct,
+  uploadProductImage,
+} from "../../services/productService";
 import { getAllCategories } from "../../services/categoryService";
 
 const HAIR_LENGTHS = [
@@ -82,13 +86,25 @@ export default function EditProduct() {
     };
 
     const result = await updateProduct(id, productData);
-    setSubmitting(false);
 
-    if (result.success) {
-      navigate("/admin");
-    } else {
+    if (!result.success) {
+      setSubmitting(false);
       setError(result.error);
+      return;
     }
+
+    const imageFile = formData.get("image");
+    if (imageFile && imageFile.size > 0) {
+      const imageResult = await uploadProductImage(id, imageFile);
+      if (!imageResult.success) {
+        setSubmitting(false);
+        setError(imageResult.error);
+        return;
+      }
+    }
+
+    setSubmitting(false);
+    navigate("/admin");
   }
 
   if (loading) {
@@ -268,6 +284,26 @@ export default function EditProduct() {
               </option>
             ))}
           </select>
+        </div>
+
+        {/* Image */}
+        <div>
+          <label className="block text-xs tracking-widest uppercase text-brown/60 dark:text-rose-gold/60 mb-1">
+            Image du produit
+          </label>
+          {product.imageUrl && (
+            <img
+              src={`${import.meta.env.VITE_API_URL.replace("/api", "")}${product.imageUrl}`}
+              alt={product.name}
+              className="w-32 h-32 object-cover rounded mb-2"
+            />
+          )}
+          <input
+            type="file"
+            name="image"
+            accept=".jpg,.jpeg,.png,.webp"
+            className="w-full text-sm text-brown dark:text-rose-gold file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:tracking-widest file:uppercase file:bg-brown/10 dark:file:bg-rose-gold/10 file:text-brown dark:file:text-rose-gold hover:file:opacity-80 file:cursor-pointer file:transition-opacity"
+          />
         </div>
 
         <div className="flex gap-4 pt-4">
