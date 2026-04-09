@@ -42,5 +42,21 @@ namespace Melanin.Domain.Entities
             ProductId = productId;
             MemberId = memberId;
         }
+
+        public void IncreaseQuantity(int quantity)
+        {
+            if (quantity <= 0)
+                throw new ArgumentException("La quantité doit être positive", nameof(quantity));
+
+            Quantity += quantity;
+        }
+
+        public void UpdateQuantity(int quantity)
+        {
+            if (quantity <= 0)
+                throw new ArgumentException("La quantité doit être positive", nameof(quantity));
+
+            Quantity = quantity;
+        }
     }
 }

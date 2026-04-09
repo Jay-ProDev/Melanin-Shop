@@ -34,7 +34,7 @@ namespace Melanin.Domain.Entities
         // Constructeur EF Core
         private Product() { }
 
-        // Constructeur principal
+        // Construc teur principal
         public Product(string name, string description, decimal unitPrice, int stockQuantity, int categoryId, string? hairColor = null, HairLength? hairLength = null, HairTexture? hairTexture = null, CapSize? capSize = null)
         {
             if (string.IsNullOrWhiteSpace(name))

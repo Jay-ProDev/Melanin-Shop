@@ -71,5 +71,6 @@ internal class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasForeignKey(p => p.CategoryId)
             .HasConstraintName("FK_Product__Category")
             .OnDelete(DeleteBehavior.Restrict);
+
     }
 }
