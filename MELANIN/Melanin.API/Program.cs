@@ -33,11 +33,13 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
 
 // === Services ===
 builder.Services.AddScoped<IMemberService, MemberService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICartItemService, CartItemService>();
 
 // === Token ===
 builder.Services.AddSingleton<TokenTool>();

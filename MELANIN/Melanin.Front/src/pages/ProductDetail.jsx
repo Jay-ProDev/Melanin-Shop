@@ -1,15 +1,22 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router";
+import { useAtom } from "jotai";
+import { tokenAtom, cartCountAtom, getMemberIdFromToken } from "../store";
 import { getProductById } from "../services/productService";
+import { addToCart, addToLocalCart } from "../services/cartItemService";
 
 export default function ProductDetail() {
   const { id } = useParams();
+  const [token] = useAtom(tokenAtom);
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [, setCartCount] = useAtom(cartCountAtom);
+  const [cartMessage, setCartMessage] = useState(null);
 
   useEffect(() => {
-    async function fetchProduct() {
+    async function loadProduct() {
       setLoading(true);
       setError(null);
 
@@ -22,8 +29,26 @@ export default function ProductDetail() {
       setLoading(false);
     }
 
-    fetchProduct();
+    loadProduct();
   }, [id]);
+
+  async function handleAddToCart() {
+    if (token) {
+      const memberId = getMemberIdFromToken(token);
+      const result = await addToCart(memberId, product.id, quantity);
+      if (result.success) {
+        setCartMessage("Produit ajouté au panier !");
+        setCartCount((prev) => prev + quantity);
+      } else {
+        setCartMessage(result.error);
+      }
+    } else {
+      addToLocalCart(product, quantity);
+      setCartMessage("Produit ajouté au panier !");
+      setCartCount((prev) => prev + quantity);
+    }
+    setTimeout(() => setCartMessage(null), 3000);
+  }
 
   if (loading) {
     return (
@@ -153,11 +178,39 @@ export default function ProductDetail() {
             {product.stockQuantity > 0 ? "En stock" : "Rupture de stock"}
           </p>
 
+          {/* Sélecteur quantité */}
+          {product.stockQuantity > 0 && (
+            <div className="flex items-center border border-beige-dark dark:border-zinc-700 w-fit">
+              <button
+                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                className="px-3 py-2 text-brown dark:text-rose-gold hover:opacity-70"
+              >
+                −
+              </button>
+              <span className="px-4 py-2 text-sm text-brown dark:text-rose-gold">
+                {quantity}
+              </span>
+              <button
+                onClick={() =>
+                  setQuantity((q) => Math.min(product.stockQuantity, q + 1))
+                }
+                className="px-3 py-2 text-brown dark:text-rose-gold hover:opacity-70"
+              >
+                +
+              </button>
+            </div>
+          )}
+
+          {/* Message panier */}
+          {cartMessage && (
+            <p className="text-sm text-green-600 dark:text-green-400">
+              {cartMessage}
+            </p>
+          )}
+
           {/* Bouton panier */}
           <button
-            onClick={() => {
-              // TODO : logique panier (localStorage)
-            }}
+            onClick={handleAddToCart}
             disabled={product.stockQuantity === 0}
             className="w-full py-3 text-xs tracking-widest uppercase bg-brown dark:bg-rose-gold text-white dark:text-black rounded hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
           >
