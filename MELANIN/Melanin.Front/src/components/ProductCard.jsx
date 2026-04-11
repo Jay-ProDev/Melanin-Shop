@@ -1,6 +1,35 @@
 import { Link } from "react-router";
+import { useAtom } from "jotai";
+import { tokenAtom, cartCountAtom, getMemberIdFromToken } from "../store";
+import { addToCart, addToLocalCart } from "../services/cartItemService";
+import { useState } from "react";
 
 export default function ProductCard({ product }) {
+  const [token] = useAtom(tokenAtom);
+  const [, setCartCount] = useAtom(cartCountAtom);
+  const [cartMessage, setCartMessage] = useState(null);
+
+  async function handleAddToCart(e) {
+    e.preventDefault();
+
+    if (token) {
+      const memberId = getMemberIdFromToken(token);
+      const result = await addToCart(memberId, product.id, 1);
+      if (result.success) {
+        setCartMessage("✓ ajouté");
+        setCartCount((prev) => prev + 1);
+      } else {
+        setCartMessage("! Erreur, Réessayez");
+      }
+    } else {
+      addToLocalCart(product, 1);
+      setCartMessage("✓");
+      setCartCount((prev) => prev + 1);
+    }
+
+    setTimeout(() => setCartMessage(null), 2000);
+  }
+
   return (
     <Link
       to={`/product/${product.id}`}
@@ -32,13 +61,17 @@ export default function ProductCard({ product }) {
         </p>
 
         <button
-          onClick={(e) => {
-            e.preventDefault();
-            // TODO : logique panier (localStorage)
-          }}
-          className="w-full py-2 text-xs tracking-widest uppercase bg-brown dark:bg-rose-gold text-white dark:text-black rounded hover:opacity-90 transition-opacity"
+          onClick={handleAddToCart}
+          disabled={product.stockQuantity === 0}
+          className="w-full py-2 text-xs tracking-widest uppercase bg-brown dark:bg-rose-gold text-white dark:text-black rounded hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          Ajouter au panier
+          {cartMessage === "✓"
+            ? "✓ Ajouté !"
+            : cartMessage === "!"
+              ? "Erreur"
+              : product.stockQuantity === 0
+                ? "Rupture de stock"
+                : "Ajouter au panier"}
         </button>
       </div>
     </Link>

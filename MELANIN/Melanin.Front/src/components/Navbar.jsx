@@ -1,13 +1,13 @@
 import { useAtom } from "jotai";
-import { tokenAtom, roleAtom } from "../store";
+import { tokenAtom, roleAtom, cartCountAtom } from "../store";
 import { Link } from "react-router";
 import { useState, useEffect } from "react";
 
 export default function Navbar() {
   const [token, setToken] = useAtom(tokenAtom);
   const [role] = useAtom(roleAtom);
-
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const [cartCount] = useAtom(cartCountAtom);
 
   useEffect(() => {
     if (theme === "dark") {
@@ -39,7 +39,6 @@ export default function Navbar() {
       >
         MELANIN
       </Link>
-
       <div className="flex items-center gap-8">
         <Link
           to="/"
@@ -47,6 +46,28 @@ export default function Navbar() {
                         text-brown-light dark:text-[#999]"
         >
           ACCUEIL
+        </Link>
+        <Link
+          to="/shop"
+          className="text-[13px] tracking-[1px] hover:opacity-70
+                        text-brown-light dark:text-[#999]"
+        >
+          BOUTIQUE
+        </Link>
+
+        {/* Icône panier */}
+        <Link to="/cart" className="relative hover:opacity-70">
+          <span className="text-[20px] text-brown-light dark:text-[#999]">
+            🛍
+          </span>
+          {cartCount > 0 && (
+            <span
+              className="absolute -top-2 -right-2 text-[10px] w-4 h-4 flex items-center justify-center rounded-full
+                            bg-brown text-beige dark:bg-rose-gold dark:text-[#0A0A0A]"
+            >
+              {cartCount}
+            </span>
+          )}
         </Link>
 
         <button
@@ -56,7 +77,6 @@ export default function Navbar() {
         >
           {theme === "dark" ? "☀" : "☾"}
         </button>
-
         {token ? (
           <>
             {role === "Admin" && (

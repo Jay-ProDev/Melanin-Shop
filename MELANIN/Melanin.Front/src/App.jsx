@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
+import Cart from "./pages/Cart";
 import Dashboard from "./pages/admin/Dashboard";
 import CreateProduct from "./pages/admin/CreateProduct";
 import EditProduct from "./pages/admin/EditProduct";
@@ -27,6 +28,7 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="shop" element={<Shop />} />
           <Route path="product/:id" element={<ProductDetail />} />
+          <Route path="cart" element={<Cart />} />
           <Route
             path="admin"
             element={role === "Admin" ? <Dashboard /> : <Navigate to="/" />}
