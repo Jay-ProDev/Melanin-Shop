@@ -64,13 +64,5 @@ internal class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasConversion<string>()
             .HasSentinel(0)
             .HasMaxLength(20);
-
-        // Relation : un Product appartient à une Category
-        builder.HasOne(p => p.Category)
-            .WithMany(c => c.Products)
-            .HasForeignKey(p => p.CategoryId)
-            .HasConstraintName("FK_Product__Category")
-            .OnDelete(DeleteBehavior.Restrict);
-
     }
 }

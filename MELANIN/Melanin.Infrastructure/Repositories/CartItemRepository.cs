@@ -15,7 +15,7 @@ public class CartItemRepository : ICartItemRepository
 
     public async Task<CartItem?> GetByIdAsync(int id)
     {
-        return await _dbContext.CartItems
+        return await _dbContext.CartItems 
             .Include(ci => ci.Product)
             .FirstOrDefaultAsync(ci => ci.Id == id);
     }
