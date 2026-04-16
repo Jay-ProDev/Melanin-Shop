@@ -13,6 +13,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import CreateProduct from "./pages/admin/CreateProduct";
 import EditProduct from "./pages/admin/EditProduct";
 import Categories from "./pages/admin/Categories";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
             path="admin/categories"
             element={role === "Admin" ? <Categories /> : <Navigate to="/" />}
           />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
