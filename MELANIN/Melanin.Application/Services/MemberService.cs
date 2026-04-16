@@ -80,7 +80,7 @@ namespace Melanin.Application.Services
             if (member is null)
                 throw new MemberNotFoundException();
 
-            await _memberRepository.DeleteAsync(id);
+            await _memberRepository.DeleteAsync(id); 
         }
     }
 }

@@ -77,6 +77,7 @@ export default function Navbar() {
         >
           {theme === "dark" ? "☀" : "☾"}
         </button>
+
         {token ? (
           <>
             {role === "Admin" && (
@@ -88,6 +89,15 @@ export default function Navbar() {
                 DASHBOARD
               </Link>
             )}
+
+            <Link
+              to="/profile"
+              className="text-[13px] tracking-[1px] hover:opacity-70
+        text-brown-light dark:text-[#999]"
+            >
+              PROFIL
+            </Link>
+
             <button
               onClick={handleLogout}
               className="text-[13px] tracking-[1px] cursor-pointer hover:opacity-70
@@ -105,6 +115,7 @@ export default function Navbar() {
             >
               CONNEXION
             </Link>
+
             <Link
               to="/register"
               className="text-[13px] tracking-[1px] px-5 py-2 border

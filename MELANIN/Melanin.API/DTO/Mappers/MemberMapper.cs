@@ -29,4 +29,7 @@ internal static class MemberMapper
             dto.Password
         );
     }
+
+    //ToEntity → vers la requête(client envoie des données → on crée en base)
+    //ToDto → vers la réponse(on lit en base → on renvoie au client)
 }

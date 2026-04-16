@@ -35,6 +35,7 @@ public class MemberController : ControllerBase
         }
     }
 
+
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDTO dto)
     {
@@ -59,6 +60,7 @@ public class MemberController : ControllerBase
             return Unauthorized(new { ex.Message });
         }
     }
+
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
@@ -98,6 +100,7 @@ public class MemberController : ControllerBase
             return NotFound(new { ex.Message });
         }
     }
+
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)

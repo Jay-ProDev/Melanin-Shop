@@ -34,12 +34,16 @@ builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+
 
 // === Services ===
 builder.Services.AddScoped<IMemberService, MemberService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICartItemService, CartItemService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
+
 
 // === Token ===
 builder.Services.AddSingleton<TokenTool>();

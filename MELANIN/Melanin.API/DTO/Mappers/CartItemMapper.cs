@@ -22,4 +22,5 @@ internal static class CartItemMapper
             CapSize = cartItem.Product.CapSize?.ToString()
         };
     }
+    //ToDto → vers la réponse(on lit en base → on renvoie au client)
 }
