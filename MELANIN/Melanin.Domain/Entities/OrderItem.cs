@@ -23,7 +23,7 @@ public class OrderItem
     private OrderItem() { }
 
     // Constructeur principal
-    public OrderItem(int quantity, decimal unitPrice, int orderId, int productId)
+    public OrderItem(int quantity, decimal unitPrice, int productId)
     {
         if (quantity <= 0)
             throw new ArgumentException("La quantité doit être supérieure à 0", nameof(quantity));
@@ -31,15 +31,11 @@ public class OrderItem
         if (unitPrice <= 0)
             throw new ArgumentException("Le prix doit être supérieur à 0", nameof(unitPrice));
 
-        if (orderId <= 0)
-            throw new ArgumentException("La commande est obligatoire", nameof(orderId));
-
         if (productId <= 0)
             throw new ArgumentException("Le produit est obligatoire", nameof(productId));
 
         Quantity = quantity;
         UnitPrice = unitPrice;
-        OrderId = orderId;
         ProductId = productId;
     }
 }
