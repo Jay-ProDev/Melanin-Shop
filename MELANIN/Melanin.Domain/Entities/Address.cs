@@ -25,7 +25,7 @@ namespace Melanin.Domain.Entities
         private Address() { }
 
         // Constructeur principal
-        public Address(string city, string postalCode, string country, string street, int memberId, string phone, string? fullName = null)
+        public Address(string city, string postalCode, string country, string street, string phone, int memberId, string? fullName = null)
         {
             if (string.IsNullOrWhiteSpace(city))
                 throw new ArgumentException("La ville est obligatoire", nameof(city));
@@ -46,8 +46,8 @@ namespace Melanin.Domain.Entities
             PostalCode = postalCode;
             Country = country;
             Street = street;
-            MemberId = memberId;
             Phone = phone;
+            MemberId = memberId;
             FullName = fullName;
         }
 
