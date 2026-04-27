@@ -1,4 +1,4 @@
-﻿using Melanin.Domain.Entities;
+﻿ using Melanin.Domain.Entities;
 using Melanin.Domain.Enums;
 using System.Collections.Generic;
 

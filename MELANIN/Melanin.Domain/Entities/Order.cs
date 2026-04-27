@@ -1,4 +1,4 @@
-﻿using Melanin.Domain.BusinessExecptions;
+﻿ using Melanin.Domain.BusinessExecptions;
 using Melanin.Domain.Enums;
 
 using System;

@@ -17,6 +17,7 @@ public class OrderRepository : IOrderRepository
     public async Task<Order?> GetByIdAsync(int id)
     {
         return await _dbContext.Orders
+            .Include(o => o.Member)
             .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)
             .Include(o => o.ShippingAddress)
@@ -28,6 +29,7 @@ public class OrderRepository : IOrderRepository
     public async Task<IEnumerable<Order>> GetByMemberIdAsync(int memberId)
     {
         return await _dbContext.Orders
+            .Include(o => o.Member)
             .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)
             .Include(o => o.ShippingAddress)
@@ -66,6 +68,7 @@ public class OrderRepository : IOrderRepository
         await _dbContext.SaveChangesAsync();
 
         return await _dbContext.Orders
+            .Include(o => o.Member)
             .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)
             .Include(o => o.ShippingAddress)
