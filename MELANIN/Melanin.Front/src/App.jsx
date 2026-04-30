@@ -14,6 +14,8 @@ import CreateProduct from "./pages/admin/CreateProduct";
 import EditProduct from "./pages/admin/EditProduct";
 import Categories from "./pages/admin/Categories";
 import Profile from "./pages/Profile";
+import Checkout from "./pages/Checkout";
+import OrderConfirmation from "./pages/OrderConfirmation";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -47,6 +49,11 @@ function App() {
             element={role === "Admin" ? <Categories /> : <Navigate to="/" />}
           />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route
+            path="/order-confirmation/:id"
+            element={<OrderConfirmation />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

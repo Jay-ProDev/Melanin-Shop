@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSearchParams, useNavigate } from "react-router";
 import { useAtom } from "jotai";
 import { tokenAtom, getMemberIdFromToken } from "../store";
 import { getMemberById, updateMember } from "../services/memberService";
@@ -10,6 +11,8 @@ import {
 
 export default function Profile() {
   const [token] = useAtom(tokenAtom);
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [member, setMember] = useState(null);
   const [address, setAddress] = useState(null);
   const [editingMember, setEditingMember] = useState(false);
@@ -79,8 +82,11 @@ export default function Profile() {
       const updated = await getAddress();
       if (updated.success) setAddress(updated.data);
       setEditingAddress(false);
-    } else {
-      setAddressError(result.error);
+
+      // Si l'user vient du checkout, on l'y renvoie
+      if (searchParams.get("from") === "checkout") {
+        navigate("/checkout");
+      }
     }
   };
 

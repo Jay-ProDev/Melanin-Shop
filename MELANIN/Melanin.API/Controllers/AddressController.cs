@@ -42,8 +42,8 @@ public class AddressController : ControllerBase
         {
             int memberId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             Address address = dto.ToEntity(memberId);
-            await _addressService.AddAsync(address);
-            return Ok(new { Message = "Adresse enregistrée !" });
+            Address created = await _addressService.AddAsync(address);
+            return Ok(created.ToDto());
         }
         catch (ArgumentException ex)
         {

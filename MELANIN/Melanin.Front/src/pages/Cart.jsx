@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate, useLocation } from "react-router";
 import { useAtom } from "jotai";
 import { tokenAtom, cartCountAtom, getMemberIdFromToken } from "../store";
 import {
@@ -19,6 +19,7 @@ export default function Cart() {
   const [, setCartCount] = useAtom(cartCountAtom);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadCart() {
@@ -51,7 +52,7 @@ export default function Cart() {
     }
 
     loadCart();
-  }, [token]);
+  }, [token, setCartCount]);
 
   async function handleUpdateQuantity(cartItemId, quantity) {
     if (quantity <= 0) return;
@@ -117,6 +118,14 @@ export default function Cart() {
     (total, item) => total + item.unitPrice * item.quantity,
     0,
   );
+
+  function handleCheckout() {
+    if (!token) {
+      navigate("/login?redirect=/checkout");
+      return;
+    }
+    navigate("/checkout");
+  }
 
   if (loading) {
     return (
@@ -247,7 +256,8 @@ export default function Cart() {
                 Total : {total.toFixed(2)} €
               </p>
               <button
-                disabled
+                onClick={handleCheckout}
+                disabled={cartItems.length === 0}
                 className="px-6 py-3 text-xs tracking-widest uppercase bg-brown dark:bg-rose-gold text-white dark:text-black hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Commander
