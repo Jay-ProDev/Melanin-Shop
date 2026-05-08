@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
-import { useParams, useLocation, useNavigate, Link } from "react-router";
+import { useParams, Link } from "react-router";
 import { useAtom } from "jotai";
 import { tokenAtom } from "../store";
 import { getMyOrder } from "../services/orderService";
 import { formatOrderStatus } from "../utils/orderStatus";
 
-export default function OrderConfirmation() {
+export default function OrderDetail() {
   const { id } = useParams();
-  const location = useLocation();
-  const navigate = useNavigate();
   const [token] = useAtom(tokenAtom);
 
   const [order, setOrder] = useState(null);
@@ -16,12 +14,6 @@ export default function OrderConfirmation() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Garde : si on n'arrive pas du checkout, redirige vers OrderDetail
-    if (!location.state?.fromCheckout) {
-      navigate(`/orders/${id}`, { replace: true });
-      return;
-    }
-
     const loadOrder = async () => {
       const result = await getMyOrder(id);
       if (result.success) {
@@ -33,7 +25,7 @@ export default function OrderConfirmation() {
     };
 
     loadOrder();
-  }, [id, token, location.state, navigate]);
+  }, [id, token]);
 
   if (loading) {
     return (
@@ -59,34 +51,41 @@ export default function OrderConfirmation() {
     );
   }
 
+  // Format date JJ/MM/AAAA
+  const orderDate = new Date(order.createdAt).toLocaleDateString("fr-FR");
+
   return (
     <section className="max-w-3xl mx-auto px-6 py-16">
-      {/* En-tête de remerciement */}
+      {/* En-tête */}
       <div className="text-center mb-12">
-        <p className="text-5xl mb-6">✓</p>
-        <h1 className="text-3xl font-serif tracking-widest uppercase text-brown-dark dark:text-white mb-3">
-          Merci pour votre commande
+        <h1 className="text-3xl font-serif tracking-widest uppercase text-brown-dark dark:text-white">
+          Commande #{order.id}
         </h1>
-        <p className="text-[13px] text-brown-light dark:text-[#777]">
-          Un récapitulatif vous a été envoyé par email.
-        </p>
       </div>
 
-      {/* Numéro et statut */}
+      {/* Infos en-tête : numéro, date, statut */}
       <div className="flex justify-center gap-12 mb-12 pb-8 border-b border-beige-dark dark:border-[#2A2A2A]">
         <div className="text-center">
           <p className="text-[11px] tracking-[2px] mb-2 text-brown-light dark:text-[#999]">
             COMMANDE N°
           </p>
-          <p className="font-serif text-[22px] text-brown-dark dark:text-white">
+          <p className="font-serif text-[18px] text-brown-dark dark:text-white">
             #{order.id}
+          </p>
+        </div>
+        <div className="text-center">
+          <p className="text-[11px] tracking-[2px] mb-2 text-brown-light dark:text-[#999]">
+            DATE
+          </p>
+          <p className="font-serif text-[18px] text-brown-dark dark:text-white">
+            {orderDate}
           </p>
         </div>
         <div className="text-center">
           <p className="text-[11px] tracking-[2px] mb-2 text-brown-light dark:text-[#999]">
             STATUT
           </p>
-          <p className="font-serif text-[22px] text-brown-dark dark:text-white">
+          <p className="font-serif text-[18px] text-brown-dark dark:text-white">
             {formatOrderStatus(order.status)}
           </p>
         </div>
@@ -155,23 +154,23 @@ export default function OrderConfirmation() {
         </p>
       </div>
 
-      {/* Actions */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+      {/* Message d'aide pour annulation/modification */}
+      <div className="mb-8 px-6 py-4 bg-beige dark:bg-[#1A1A1A] border-l-2 border-gold dark:border-rose-gold">
+        <p className="text-[12px] text-brown-light dark:text-[#999]">
+          Pour annuler ou modifier cette commande, contactez notre service
+          client.
+        </p>
+      </div>
+
+      {/* Bouton retour */}
+      <div className="flex justify-center">
         <Link
           to="/profile"
           className="px-8 py-3 text-[12px] tracking-[2px] text-center cursor-pointer font-medium border
             text-brown border-brown hover:bg-beige
             dark:text-rose-gold dark:border-rose-gold dark:hover:bg-[#1A1A1A]"
         >
-          MES COMMANDES
-        </Link>
-        <Link
-          to="/shop"
-          className="px-8 py-3 text-[12px] tracking-[2px] text-center cursor-pointer font-medium
-            text-beige bg-brown hover:bg-brown-dark
-            dark:text-[#0A0A0A] dark:bg-rose-gold dark:hover:bg-rose-gold-dark"
-        >
-          CONTINUER MES ACHATS
+          RETOUR AU PROFIL
         </Link>
       </div>
     </section>

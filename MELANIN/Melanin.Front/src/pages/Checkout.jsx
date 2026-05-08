@@ -19,11 +19,6 @@ export default function Checkout() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!token) {
-      navigate("/login?redirect=/checkout");
-      return;
-    }
-
     const loadCheckoutData = async () => {
       const memberId = getMemberIdFromToken(token);
       const [cartResult, addressResult] = await Promise.all([

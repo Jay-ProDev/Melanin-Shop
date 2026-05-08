@@ -2,7 +2,7 @@
 
 namespace Melanin.API.DTO.Request
 {
-    public class CreateOrderDTO
+    public class CreateOrderRequestDTO
     {
         [Required]
         public required int ShippingAddressId { get; set; }

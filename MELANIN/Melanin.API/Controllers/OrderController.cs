@@ -26,7 +26,7 @@ public class OrderController : ControllerBase
 
     [HttpPost]
     [EndpointSummary("Passer une commande à partir du panier")]
-    public async Task<IActionResult> Create([FromBody] CreateOrderDTO dto)
+    public async Task<IActionResult> Create([FromBody] CreateOrderRequestDTO dto)
     {
         try
         {

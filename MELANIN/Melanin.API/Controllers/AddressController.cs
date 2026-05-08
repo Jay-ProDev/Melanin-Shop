@@ -50,7 +50,7 @@ public class AddressController : ControllerBase
             return BadRequest(new { ex.Message });
         }
     }
-
+     
     [HttpPut("{id}")]
     [EndpointSummary("Modifier une adresse")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateAddressDTO dto)

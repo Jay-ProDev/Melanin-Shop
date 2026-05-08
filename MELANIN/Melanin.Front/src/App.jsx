@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 import { roleAtom } from "./store";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import RequireAuth from "./components/RequireAuth";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -16,22 +17,25 @@ import Categories from "./pages/admin/Categories";
 import Profile from "./pages/Profile";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
+import OrderDetail from "./pages/OrderDetail";
 import NotFound from "./pages/NotFound";
 
 function App() {
   const [role] = useAtom(roleAtom);
-
   return (
     <div className="min-h-screen bg-beige-light dark:bg-[#0A0A0A]">
       <Navbar />
       <main>
         <Routes>
+          {/* Routes publiques */}
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="shop" element={<Shop />} />
           <Route path="product/:id" element={<ProductDetail />} />
           <Route path="cart" element={<Cart />} />
+
+          {/* Routes admin (protégées par rôle, déjà gérées) */}
           <Route
             path="admin"
             element={role === "Admin" ? <Dashboard /> : <Navigate to="/" />}
@@ -48,12 +52,41 @@ function App() {
             path="admin/categories"
             element={role === "Admin" ? <Categories /> : <Navigate to="/" />}
           />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/checkout" element={<Checkout />} />
+
+          {/* Routes protégées (auth requis) */}
+          <Route
+            path="/profile"
+            element={
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <RequireAuth>
+                <Checkout />
+              </RequireAuth>
+            }
+          />
           <Route
             path="/order-confirmation/:id"
-            element={<OrderConfirmation />}
+            element={
+              <RequireAuth>
+                <OrderConfirmation />
+              </RequireAuth>
+            }
           />
+          <Route
+            path="/orders/:id"
+            element={
+              <RequireAuth>
+                <OrderDetail />
+              </RequireAuth>
+            }
+          />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

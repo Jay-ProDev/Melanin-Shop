@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useAtom } from "jotai";
 import { tokenAtom, cartCountAtom, getMemberIdFromToken } from "../store";
 import {
@@ -120,10 +120,6 @@ export default function Cart() {
   );
 
   function handleCheckout() {
-    if (!token) {
-      navigate("/login?redirect=/checkout");
-      return;
-    }
     navigate("/checkout");
   }
 
