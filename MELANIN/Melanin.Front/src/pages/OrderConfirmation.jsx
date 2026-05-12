@@ -3,7 +3,7 @@ import { useParams, useLocation, useNavigate, Link } from "react-router";
 import { useAtom } from "jotai";
 import { tokenAtom } from "../store";
 import { getMyOrder } from "../services/orderService";
-import { formatOrderStatus } from "../utils/orderStatus";
+import { formatOrderStatus, getOrderStatusStyle } from "../utils/orderStatus";
 
 export default function OrderConfirmation() {
   const { id } = useParams();
@@ -86,9 +86,11 @@ export default function OrderConfirmation() {
           <p className="text-[11px] tracking-[2px] mb-2 text-brown-light dark:text-[#999]">
             STATUT
           </p>
-          <p className="font-serif text-[22px] text-brown-dark dark:text-white">
-            {formatOrderStatus(order.status)}
-          </p>
+          <span
+            className={`inline-block text-[11px] tracking-[1px] px-3 py-1 ${getOrderStatusStyle(order.status)}`}
+          >
+            {formatOrderStatus(order.status).toUpperCase()}
+          </span>
         </div>
       </div>
 
@@ -101,8 +103,24 @@ export default function OrderConfirmation() {
           {order.orderItems.map((item) => (
             <div
               key={item.id}
-              className="flex justify-between items-start gap-4 pb-4 border-b border-beige-dark dark:border-[#2A2A2A]"
+              className="flex items-start gap-4 pb-4 border-b border-beige-dark dark:border-[#2A2A2A]"
             >
+              {/* Image produit */}
+              <div className="w-20 h-20 shrink-0 bg-beige dark:bg-[#1A1A1A] flex items-center justify-center overflow-hidden">
+                {item.productImageUrl ? (
+                  <img
+                    src={`${import.meta.env.VITE_API_URL.replace("/api", "")}${item.productImageUrl}`}
+                    alt={item.productName}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-brown/40 dark:text-rose-gold/40 text-[10px] tracking-[1px]">
+                    PHOTO
+                  </span>
+                )}
+              </div>
+
+              {/* Infos produit */}
               <div className="flex-1">
                 <p className="text-[14px] text-brown-dark dark:text-white">
                   {item.productName}
@@ -111,7 +129,9 @@ export default function OrderConfirmation() {
                   Quantité : {item.quantity} × {item.unitPrice.toFixed(2)} €
                 </p>
               </div>
-              <p className="text-[14px] font-medium text-brown-dark dark:text-white">
+
+              {/* Total ligne */}
+              <p className="text-[14px] font-medium text-brown-dark dark:text-white shrink-0">
                 {item.totalPrice.toFixed(2)} €
               </p>
             </div>
