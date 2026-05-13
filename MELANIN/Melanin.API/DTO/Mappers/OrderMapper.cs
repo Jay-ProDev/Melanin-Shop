@@ -19,6 +19,7 @@ internal static class OrderMapper
             MemberId = order.MemberId,
             MemberFirstName = order.Member.FirstName,
             MemberLastName = order.Member.LastName,
+            MemberEmail = order.Member.Email,
 
             ShippingAddress = order.ShippingAddress.ToDto(),
             BillingAddress = order.BillingAddress?.ToDto(),

@@ -537,7 +537,7 @@ export default function Profile() {
                     text-brown border-brown hover:bg-beige
                     dark:text-rose-gold dark:border-rose-gold dark:hover:bg-[#1A1A1A]"
                 >
-                  VOIR PLUS ({orders.length - visibleCount} restante{" "}
+                  VOIR PLUS ({orders.length - visibleCount} restante
                   {orders.length - visibleCount > 1 && "s"})
                 </button>
               </div>

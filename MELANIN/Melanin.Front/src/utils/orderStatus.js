@@ -1,4 +1,4 @@
-const ORDER_STATUS_LABELS = {
+export const ORDER_STATUS_LABELS = {
   Pending: "En attente",
   Confirmed: "Confirmée",
   Shipped: "Expédiée",

@@ -13,6 +13,7 @@ namespace Melanin.API.DTO.Response
         public int MemberId { get; set; }
         public string MemberFirstName { get; set; } = default!;
         public string MemberLastName { get; set; } = default!;
+        public string MemberEmail { get; set; } = default!;
 
         public AddressResponseDTO ShippingAddress { get; set; } = default!;
         public AddressResponseDTO? BillingAddress { get; set; }
