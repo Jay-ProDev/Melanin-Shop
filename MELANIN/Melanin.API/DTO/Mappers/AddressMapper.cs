@@ -29,8 +29,8 @@ internal static class AddressMapper
             dto.PostalCode,
             dto.Country,
             dto.Street,
-            memberId,
             dto.Phone,
+            memberId,
             dto.FullName
         );
     }

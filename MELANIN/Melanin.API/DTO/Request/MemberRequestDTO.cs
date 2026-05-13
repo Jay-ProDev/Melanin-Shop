@@ -19,7 +19,10 @@ namespace Melanin.API.DTO.Request
 
         [Required]
         [MinLength(8)]
-        [RegularExpression("(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).*")]
+        [RegularExpression(
+             "(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).*",
+             ErrorMessage = "Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial."
+        )]
         public required string Password { get; set; }
     }
 

@@ -92,6 +92,12 @@ export default function Dashboard() {
             + Produit
           </Link>
           <Link
+            to="/admin/orders"
+            className="px-5 py-2 text-xs tracking-widest uppercase border border-brown dark:border-rose-gold text-brown dark:text-rose-gold rounded hover:opacity-80 transition-opacity"
+          >
+            Commandes
+          </Link>
+          <Link
             to="/admin/categories"
             className="px-5 py-2 text-xs tracking-widest uppercase border border-brown dark:border-rose-gold text-brown dark:text-rose-gold rounded hover:opacity-80 transition-opacity"
           >

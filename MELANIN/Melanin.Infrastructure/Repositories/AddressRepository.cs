@@ -22,6 +22,7 @@ public class AddressRepository : IAddressRepository
     public async Task<Address?> GetByMemberIdAsync(int memberId)
     {
         return await _dbContext.Addresses
+            .OrderBy(a => a.Id)
             .FirstOrDefaultAsync(a => a.MemberId == memberId);
     }
 

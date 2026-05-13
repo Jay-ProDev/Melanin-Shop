@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 import { tokenAtom, getMemberIdFromToken } from "../store";
 import { authLogin } from "../services/memberService";
-import { Navigate } from "react-router";
+import { Navigate, useSearchParams, useNavigate } from "react-router";
 import { useState } from "react";
 import {
   addToCart,
@@ -12,8 +12,9 @@ import {
 export default function Login() {
   const [token, setToken] = useAtom(tokenAtom);
   const [error, setError] = useState("");
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
-  // Remplacer le loginAction
   const loginAction = async (formData) => {
     setError("");
     const result = await authLogin(
@@ -21,30 +22,25 @@ export default function Login() {
       formData.get("password"),
     );
     if (result.success) {
-      // 1. Récupérer le panier localStorage avant de sauvegarder le token
       const localCart = getLocalCart();
-
-      // 2. Sauvegarder le token
       setToken(result.data.token);
-
-      // 3. Fusionner le localStorage avec l'API si articles présents
       if (localCart.length > 0) {
         const memberId = getMemberIdFromToken(result.data.token);
-
         for (const item of localCart) {
           await addToCart(memberId, item.productId, item.quantity);
         }
-
-        // 4. Vider le lcalStorage
         clearLocalCart();
       }
+      const redirectTo = searchParams.get("redirect") || "/";
+      navigate(redirectTo);
     } else {
       setError(result.error);
     }
   };
 
   if (token) {
-    return <Navigate to="/" replace />;
+    const redirectTo = searchParams.get("redirect") || "/";
+    return <Navigate to={redirectTo} replace />;
   }
 
   return (

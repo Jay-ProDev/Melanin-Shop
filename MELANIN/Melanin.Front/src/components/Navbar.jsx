@@ -2,12 +2,14 @@ import { useAtom } from "jotai";
 import { tokenAtom, roleAtom, cartCountAtom } from "../store";
 import { Link } from "react-router";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 
 export default function Navbar() {
   const [token, setToken] = useAtom(tokenAtom);
   const [role] = useAtom(roleAtom);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const [cartCount] = useAtom(cartCountAtom);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (theme === "dark") {
@@ -23,7 +25,10 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    setToken(null);
+    navigate("/");
+    // Délai d'1 frame pour laisser React-router finir la navigation
+    // avant que RequireAuth ne réagisse au token null
+    setTimeout(() => setToken(null), 16);
   };
 
   return (

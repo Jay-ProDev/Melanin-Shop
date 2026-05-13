@@ -195,32 +195,43 @@ namespace Melanin.Infrastructure.Database.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id_Order");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("BillingAddressId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id_BillingAddress");
 
                     b.Property<string>("CouponCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("MemberId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id_Member");
 
                     b.Property<int>("ShippingAddressId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id_ShippingAddress");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("PK_Order");
+
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"));
 
                     b.HasIndex("BillingAddressId");
 
@@ -228,36 +239,43 @@ namespace Melanin.Infrastructure.Database.Migrations
 
                     b.HasIndex("ShippingAddressId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Order", (string)null);
                 });
 
             modelBuilder.Entity("Melanin.Domain.Entities.OrderItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id_OrderItem");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("OrderId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id_Order");
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id_Product");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("PK_OrderItem");
+
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"));
 
                     b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItem", (string)null);
                 });
 
             modelBuilder.Entity("Melanin.Domain.Entities.Payment", b =>
@@ -282,8 +300,7 @@ namespace Melanin.Infrastructure.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId")
-                        .IsUnique();
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Payments");
                 });
@@ -390,7 +407,9 @@ namespace Melanin.Infrastructure.Database.Migrations
                 {
                     b.HasOne("Melanin.Domain.Entities.Address", "BillingAddress")
                         .WithMany()
-                        .HasForeignKey("BillingAddressId");
+                        .HasForeignKey("BillingAddressId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("FK_Order__BillingAddress");
 
                     b.HasOne("Melanin.Domain.Entities.Member", "Member")
                         .WithMany("Orders")
@@ -402,8 +421,9 @@ namespace Melanin.Infrastructure.Database.Migrations
                     b.HasOne("Melanin.Domain.Entities.Address", "ShippingAddress")
                         .WithMany()
                         .HasForeignKey("ShippingAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Order__ShippingAddress");
 
                     b.Navigation("BillingAddress");
 
@@ -418,13 +438,15 @@ namespace Melanin.Infrastructure.Database.Migrations
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_OrderItem__Order");
 
                     b.HasOne("Melanin.Domain.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_OrderItem__Product");
 
                     b.Navigation("Order");
 
@@ -434,10 +456,11 @@ namespace Melanin.Infrastructure.Database.Migrations
             modelBuilder.Entity("Melanin.Domain.Entities.Payment", b =>
                 {
                     b.HasOne("Melanin.Domain.Entities.Order", "Order")
-                        .WithOne("Payment")
-                        .HasForeignKey("Melanin.Domain.Entities.Payment", "OrderId")
+                        .WithMany("Payments")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Payment__Order");
 
                     b.Navigation("Order");
                 });
@@ -472,7 +495,7 @@ namespace Melanin.Infrastructure.Database.Migrations
                 {
                     b.Navigation("OrderItems");
 
-                    b.Navigation("Payment");
+                    b.Navigation("Payments");
                 });
 #pragma warning restore 612, 618
         }
