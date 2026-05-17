@@ -11,7 +11,7 @@ namespace Melanin.Domain.Entities
         public decimal Amount { get; private set; }
         public PaymentStatus Status { get; private set; }
         public DateTime? PaidAt { get; private set; }
-        public string? StripeSessionId { get; private set; }
+        public string StripeSessionId { get; private set; } = default!;
 
         // Relations
         public Order Order { get; private set; } = default!;
