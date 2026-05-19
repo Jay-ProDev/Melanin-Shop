@@ -2,9 +2,11 @@ using Melanin.API.Configs;
 using Melanin.API.Token;
 using Melanin.Application.Interfaces.Repositories;
 using Melanin.Application.Interfaces.Services;
+using Melanin.Application.Interfaces.Utils;
 using Melanin.Application.Services;
 using Melanin.Infrastructure.Database;
 using Melanin.Infrastructure.Database.Repositories;
+using Melanin.Infrastructure.Stripe;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -36,6 +38,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();   
 
 
 
@@ -46,6 +49,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICartItemService, CartItemService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 
 // === Token ===
@@ -72,6 +76,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true
         };
     });
+
+// === Stripe ===
+builder.Services.AddScoped<IStripeUtil>(provider =>
+    new StripeUtil(
+        builder.Configuration["Stripe:SecretKey"]
+            ?? throw new Exception("Stripe:SecretKey non défini dans la config !"),
+        builder.Configuration["Stripe:WebhookSecret"]
+            ?? throw new Exception("Stripe:WebhookSecret non défini dans la config !"),
+        builder.Configuration["Stripe:SuccessUrl"]
+            ?? throw new Exception("Stripe:SuccessUrl non défini dans la config !"),
+        builder.Configuration["Stripe:CancelUrl"]
+            ?? throw new Exception("Stripe:CancelUrl non défini dans la config !")
+    )
+);
 
 builder.Services.AddAuthorization();
 
