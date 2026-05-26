@@ -17,9 +17,29 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // === Database ===
+// builder.Services.AddDbContext<MelaninDbContext>(options =>
+//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+// );
+
+var provider = builder.Configuration.GetValue<string>("DatabaseProvider") ?? "SqlServer";
+
 builder.Services.AddDbContext<MelaninDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+{
+    if (provider == "Sqlite")
+    {
+        options.UseSqlite(
+            builder.Configuration.GetConnectionString("Sqlite"),
+            b => b.MigrationsAssembly("Melanin.Infrastructure.Database.Sqlite")
+        );
+    }
+    else
+    {
+        options.UseSqlServer(
+            builder.Configuration.GetConnectionString("SqlServer"),
+            b => b.MigrationsAssembly("Melanin.Infrastructure.Database")
+        );
+    }
+});
 
 builder.Services.AddCors(options =>
 {
@@ -38,7 +58,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();   
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
 
 
