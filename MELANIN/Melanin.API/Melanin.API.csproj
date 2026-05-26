@@ -24,6 +24,7 @@
     <ProjectReference Include="..\Melanin.Application\Melanin.Application.csproj" />
     <ProjectReference Include="..\Melanin.Domain\Melanin.Domain.csproj" />
     <ProjectReference Include="..\Melanin.Infrastructure.Mailer\Melanin.Infrastructure.Mailer.csproj" />
+    <ProjectReference Include="..\Melanin.Infrastructure.Sqlite\Melanin.Infrastructure.Database.Sqlite.csproj" />
     <ProjectReference Include="..\Melanin.Infrastructure.Stripe\Melanin.Infrastructure.Stripe.csproj" />
     <ProjectReference Include="..\Melanin.Infrastructure\Melanin.Infrastructure.Database.csproj" />
   </ItemGroup>
