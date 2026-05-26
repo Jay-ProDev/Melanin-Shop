@@ -7,6 +7,7 @@
   </Folder>
   <Folder Name="/Infrastructure/">
     <Project Path="Melanin.Infrastructure.Mailer/Melanin.Infrastructure.Mailer.csproj" Id="3eaecc12-b400-411f-bebb-9f7f506dbe06" />
+    <Project Path="Melanin.Infrastructure.Sqlite/Melanin.Infrastructure.Database.Sqlite.csproj" />
     <Project Path="Melanin.Infrastructure.Stripe/Melanin.Infrastructure.Stripe.csproj" Id="0fb6df30-1c7f-4ded-a0e0-619d13121df2" />
     <Project Path="Melanin.Infrastructure/Melanin.Infrastructure.Database.csproj" Id="3e922ab2-e9af-4fd8-8f4d-78742b0f9f96" />
   </Folder>
