@@ -482,3 +482,8 @@ $RECYCLE.BIN/
 *.swp
 .claude/
 MELANIN/Melanin.API/wwwroot/images/products/
+
+# SQLite database files (local dev data)
+*.db
+*.db-shm
+*.db-wal
