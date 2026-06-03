@@ -5,6 +5,7 @@ import { tokenAtom, cartCountAtom, getMemberIdFromToken } from "../store";
 import { getCart } from "../services/cartItemService";
 import { getAddress, createAddress } from "../services/addressService";
 import { createOrder } from "../services/orderService";
+import { createPaymentSession } from "../services/paymentService";
 
 export default function Checkout() {
   const [token] = useAtom(tokenAtom);
@@ -87,10 +88,15 @@ export default function Checkout() {
       return;
     }
 
+    const paymentResult = await createPaymentSession(orderResult.data.id);
+    if (!paymentResult.success) {
+      setError(paymentResult.error);
+      setSubmitting(false);
+      return;
+    }
+
     setCartCount(0);
-    navigate(`/order-confirmation/${orderResult.data.id}`, {
-      state: { fromCheckout: true },
-    });
+    window.location.href = paymentResult.data.url;
   };
 
   const total = cartItems.reduce(
@@ -313,7 +319,7 @@ export default function Checkout() {
           >
             {submitting
               ? "TRAITEMENT..."
-              : `CONFIRMER MA COMMANDE - ${total.toFixed(2)} €`}
+              : `PROCÉDER AU PAIEMENT - ${total.toFixed(2)} €`}
           </button>
         </div>
       </form>

@@ -13,11 +13,11 @@ internal sealed class BearerSecuritySchemeTransformer(
         OpenApiDocumentTransformerContext context,
         CancellationToken cancellationToken)
     {
-        var authenticationSchemes = await authenticationSchemeProvider.GetAllSchemesAsync();
+        IEnumerable<AuthenticationScheme> authenticationSchemes = await authenticationSchemeProvider.GetAllSchemesAsync();
 
         if (authenticationSchemes.Any(authScheme => authScheme.Name == "Bearer"))
         {
-            var securitySchemes = new Dictionary<string, IOpenApiSecurityScheme>
+            Dictionary<string, IOpenApiSecurityScheme> securitySchemes = new Dictionary<string, IOpenApiSecurityScheme>
             {
                 ["Bearer"] = new OpenApiSecurityScheme
                 {

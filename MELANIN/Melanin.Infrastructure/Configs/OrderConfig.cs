@@ -72,12 +72,12 @@ internal class OrderConfiguration : IEntityTypeConfiguration<Order>
             .HasConstraintName("FK_Order__BillingAddress")
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Order a plusieurs Payments (cascade : Payment n'existe pas sans Order)
-        // Permet d'historiser : tentatives échouées, paiement en N fois, remboursements
+        // Order a plusieurs Payments (restrict : préserver l'historique financier)
+        // Tentatives échouées, paiement en N fois, remboursements
         builder.HasMany(o => o.Payments)
             .WithOne(p => p.Order)
             .HasForeignKey(p => p.OrderId)
             .HasConstraintName("FK_Payment__Order")
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

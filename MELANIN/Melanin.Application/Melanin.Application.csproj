@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\Utils\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Soenneker.Hashing.Argon2" Version="4.0.761" />
   </ItemGroup>
 

@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import { useParams, useLocation, useNavigate, Link } from "react-router";
+import { useParams, useSearchParams, useNavigate, Link } from "react-router";
 import { useAtom } from "jotai";
 import { tokenAtom } from "../store";
 import { getMyOrder } from "../services/orderService";
 import { formatOrderStatus, getOrderStatusStyle } from "../utils/orderStatus";
 
-export default function OrderConfirmation() {
+export default function PaymentSuccess() {
   const { id } = useParams();
-  const location = useLocation();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [token] = useAtom(tokenAtom);
 
@@ -16,12 +16,12 @@ export default function OrderConfirmation() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Garde : si on n'arrive pas du checkout, redirige vers OrderDetail
-    if (!location.state?.fromCheckout) {
+    const isFromStripe = searchParams.get("paid") === "true";
+    if (!isFromStripe) {
       navigate(`/orders/${id}`, { replace: true });
       return;
     }
-
+ 
     const loadOrder = async () => {
       const result = await getMyOrder(id);
       if (result.success) {
@@ -33,7 +33,7 @@ export default function OrderConfirmation() {
     };
 
     loadOrder();
-  }, [id, token, location.state, navigate]);
+  }, [id, token, searchParams, navigate]);
 
   if (loading) {
     return (
