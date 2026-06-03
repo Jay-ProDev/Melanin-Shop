@@ -33,8 +33,8 @@ public class StripeUtil : IStripeUtil
         SessionCreateOptions options = new SessionCreateOptions
         {
             Mode = "payment",
-            SuccessUrl = _successUrl,
-            CancelUrl = _cancelUrl,
+            SuccessUrl = $"{_successUrl}/{orderId}?paid=true",
+            CancelUrl = $"{_cancelUrl}/{orderId}?cancelled=true",
             LineItems = new List<SessionLineItemOptions>
             {
                 new SessionLineItemOptions

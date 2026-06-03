@@ -4,6 +4,7 @@ import { useAtom } from "jotai";
 import { tokenAtom } from "../store";
 import { getMyOrder } from "../services/orderService";
 import { formatOrderStatus, getOrderStatusStyle } from "../utils/orderStatus";
+import { createPaymentSession } from "../services/paymentService";
 
 export default function OrderDetail() {
   const { id } = useParams();
@@ -53,6 +54,16 @@ export default function OrderDetail() {
 
   // Format date JJ/MM/AAAA
   const orderDate = new Date(order.createdAt).toLocaleDateString("fr-FR");
+
+  const handleResumePayment = async () => {
+    setError("");
+    const result = await createPaymentSession(order.id);
+    if (!result.success) {
+      setError(result.error);
+      return;
+    }
+    window.location.href = result.data.url;
+  };
 
   return (
     <section className="max-w-3xl mx-auto px-6 py-16">
@@ -170,6 +181,20 @@ export default function OrderDetail() {
           {order.totalPrice.toFixed(2)} €
         </p>
       </div>
+      
+      {/* Bandeau pour les commandes Pending */}
+      {order.status === "Pending" && (
+        <div className="mb-8 px-6 py-4 bg-beige dark:bg-[#1A1A1A] border-l-2 border-gold dark:border-rose-gold">
+          <p className="text-[13px] text-brown-dark dark:text-white mb-2">
+            Cette commande est en attente de paiement.
+          </p>
+          <p className="text-[12px] text-brown-light dark:text-[#999]">
+            Reprenez le paiement pour finaliser votre commande, ou laissez-la en
+            attente.
+          </p>
+        </div>
+      )}
+
       {/* Message d'aide pour annulation/modification */}
       <div className="mb-8 px-6 py-4 bg-beige dark:bg-[#1A1A1A] border-l-2 border-gold dark:border-rose-gold">
         <p className="text-[12px] text-brown-light dark:text-[#999]">
@@ -177,8 +202,18 @@ export default function OrderDetail() {
           client.
         </p>
       </div>
-      {/* Bouton retour */}
-      <div className="flex justify-center">
+      {/* Boutons d'action */}
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        {order.status === "Pending" && (
+          <button
+            onClick={handleResumePayment}
+            className="px-8 py-3 text-[12px] tracking-[2px] text-center cursor-pointer font-medium
+              text-beige bg-brown hover:bg-brown-dark
+              dark:text-[#0A0A0A] dark:bg-rose-gold dark:hover:bg-rose-gold-dark"
+          >
+            REPRENDRE LE PAIEMENT
+          </button>
+        )}
         <Link
           to="/profile"
           className="px-8 py-3 text-[12px] tracking-[2px] text-center cursor-pointer font-medium border

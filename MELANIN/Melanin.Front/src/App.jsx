@@ -17,7 +17,8 @@ import AdminOrders from "./pages/admin/AdminOrders";
 import AdminOrderDetail from "./pages/admin/AdminOrderDetail";
 import Profile from "./pages/Profile";
 import Checkout from "./pages/Checkout";
-import OrderConfirmation from "./pages/OrderConfirmation";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentCancel from "./pages/PaymentCancel";
 import OrderDetail from "./pages/OrderDetail";
 import NotFound from "./pages/NotFound";
 
@@ -103,10 +104,18 @@ function App() {
             }
           />
           <Route
-            path="/order-confirmation/:id"
+            path="/payment/success/:id"
             element={
               <RequireAuth>
-                <OrderConfirmation />
+                <PaymentSuccess />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/payment/cancel/:id"
+            element={
+              <RequireAuth>
+                <PaymentCancel />
               </RequireAuth>
             }
           />
