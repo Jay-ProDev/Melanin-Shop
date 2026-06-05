@@ -50,16 +50,17 @@ public class AddressController : ControllerBase
             return BadRequest(new { ex.Message });
         }
     }
-     
+
     [HttpPut("{id}")]
     [EndpointSummary("Modifier une adresse")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateAddressDTO dto)
     {
         try
         {
-            Address address = await _addressService.GetByIdAsync(id);
+            int memberId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            Address address = await _addressService.GetByIdForMemberAsync(id, memberId);
             address.Update(dto.City, dto.PostalCode, dto.Country, dto.Street, dto.Phone, dto.FullName);
-            await _addressService.UpdateAsync(address);
+            await _addressService.UpdateAsync(address, memberId);
             return Ok(new { Message = "Adresse mise à jour !" });
         }
         catch (AddressNotFoundException ex)
@@ -78,7 +79,8 @@ public class AddressController : ControllerBase
     {
         try
         {
-            await _addressService.DeleteAsync(id);
+            int memberId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _addressService.DeleteAsync(id, memberId);
             return Ok(new { Message = "Adresse supprimée !" });
         }
         catch (AddressNotFoundException ex)

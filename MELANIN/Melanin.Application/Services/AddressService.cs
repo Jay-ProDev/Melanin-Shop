@@ -27,24 +27,28 @@ public class AddressService : IAddressService
         return address;
     }
 
+    public async Task<Address> GetByIdForMemberAsync(int id, int memberId)
+    {
+        Address? address = await _addressRepository.GetByIdAsync(id);
+        if (address is null || address.MemberId != memberId)
+            throw new AddressNotFoundException(id);
+        return address;
+    }
+
     public async Task<Address> AddAsync(Address address)
     {
         return await _addressRepository.AddAsync(address);
     }
 
-    public async Task UpdateAsync(Address address)
+    public async Task UpdateAsync(Address address, int memberId)
     {
-        Address? existing = await _addressRepository.GetByIdAsync(address.Id);
-        if (existing is null)
-            throw new AddressNotFoundException(address.Id);
+        await GetByIdForMemberAsync(address.Id, memberId);
         await _addressRepository.UpdateAsync(address);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id, int memberId)
     {
-        Address? existing = await _addressRepository.GetByIdAsync(id);
-        if (existing is null)
-            throw new AddressNotFoundException(id);
+        await GetByIdForMemberAsync(id, memberId);
         await _addressRepository.DeleteAsync(id);
     }
 }
