@@ -3,6 +3,7 @@ using Melanin.API.DTO.Request;
 using Melanin.Application.Interfaces.Services;
 using Melanin.Domain.BusinessExecptions;
 using Melanin.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Melanin.API.Controllers;
@@ -19,6 +20,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     [EndpointSummary("Créer une catégorie")]
     public async Task<IActionResult> Create([FromBody] CreateCategoryDTO dto)
     {
@@ -72,6 +74,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     [EndpointSummary("Modifier une catégorie")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateCategoryDTO dto)
     {
@@ -93,6 +96,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     [EndpointSummary("Supprimer une catégorie")]
     public async Task<IActionResult> Delete(int id)
     {
