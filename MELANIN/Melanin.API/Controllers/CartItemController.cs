@@ -5,11 +5,13 @@ using Melanin.Domain.BusinessExecptions;
 using Melanin.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Melanin.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class CartItemController : ControllerBase
 {
     private readonly ICartItemService _cartItemService;
@@ -52,7 +54,8 @@ public class CartItemController : ControllerBase
     {
         try
         {
-            await _cartItemService.UpdateQuantityAsync(cartItemId, dto.Quantity);
+            int memberId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _cartItemService.UpdateQuantityAsync(cartItemId, memberId, dto.Quantity);
             return Ok(new { Message = "Quantité mise à jour !" });
         }
         catch (CartItemNotFoundException ex)
@@ -71,7 +74,8 @@ public class CartItemController : ControllerBase
     {
         try
         {
-            await _cartItemService.RemoveFromCartAsync(cartItemId);
+            int memberId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _cartItemService.RemoveFromCartAsync(cartItemId, memberId);
             return Ok(new { Message = "Article supprimé du panier !" });
         }
         catch (CartItemNotFoundException ex)

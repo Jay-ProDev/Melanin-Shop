@@ -21,6 +21,14 @@ public class CartItemService : ICartItemService
         return await _cartItemRepository.GetByMemberIdAsync(memberId);
     }
 
+    public async Task<CartItem> GetByIdForMemberAsync(int cartItemId, int memberId)
+    {
+        CartItem? cartItem = await _cartItemRepository.GetByIdAsync(cartItemId);
+        if (cartItem is null || cartItem.MemberId != memberId)
+            throw new CartItemNotFoundException(cartItemId);
+        return cartItem;
+    }
+
     public async Task AddToCartAsync(int memberId, int productId, int quantity)
     {
         // Récupérer le produit pour avoir le prix et vérifier le stock
@@ -46,22 +54,16 @@ public class CartItemService : ICartItemService
         }
     }
 
-    public async Task UpdateQuantityAsync(int cartItemId, int quantity)
+    public async Task UpdateQuantityAsync(int cartItemId, int memberId, int quantity)
     {
-        CartItem? cartItem = await _cartItemRepository.GetByIdAsync(cartItemId);
-        if (cartItem is null)
-            throw new CartItemNotFoundException(cartItemId);
-
+        CartItem cartItem = await GetByIdForMemberAsync(cartItemId, memberId);
         cartItem.UpdateQuantity(quantity);
         await _cartItemRepository.UpdateAsync(cartItem);
     }
 
-    public async Task RemoveFromCartAsync(int cartItemId)
+    public async Task RemoveFromCartAsync(int cartItemId, int memberId)
     {
-        CartItem? cartItem = await _cartItemRepository.GetByIdAsync(cartItemId);
-        if (cartItem is null)
-            throw new CartItemNotFoundException(cartItemId);
-
+        CartItem cartItem = await GetByIdForMemberAsync(cartItemId, memberId);
         await _cartItemRepository.DeleteAsync(cartItemId);
     }
 
