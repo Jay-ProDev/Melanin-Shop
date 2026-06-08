@@ -1,4 +1,4 @@
-import axios from "axios";
+import apiClient from "./apiClient";
 import { tokenAtom, store } from "../store";
 
 // ========== CONNECTÉ ==========
@@ -7,7 +7,7 @@ export async function getCart(memberId) {
   let response;
   try {
     const token = store.get(tokenAtom);
-    response = await axios.get(`/CartItem/${memberId}`, {
+    response =  await apiClient.get(`/CartItem/${memberId}`, {
       baseURL: import.meta.env.VITE_API_URL,
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -27,7 +27,7 @@ export async function addToCart(memberId, productId, quantity) {
   let response;
   try {
     const token = store.get(tokenAtom);
-    response = await axios.post(
+    response =  await apiClient.post(
       `/CartItem/${memberId}`,
       { productId, quantity },
       {
@@ -51,7 +51,7 @@ export async function updateQuantity(cartItemId, quantity) {
   let response;
   try {
     const token = store.get(tokenAtom);
-    response = await axios.put(
+    response =  await apiClient.put(
       `/CartItem/${cartItemId}`,
       { quantity },
       {
@@ -75,7 +75,7 @@ export async function removeFromCart(cartItemId) {
   let response;
   try {
     const token = store.get(tokenAtom);
-    response = await axios.delete(`/CartItem/${cartItemId}`, {
+    response =  await apiClient.delete(`/CartItem/${cartItemId}`, {
       baseURL: import.meta.env.VITE_API_URL,
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -95,7 +95,7 @@ export async function clearCart(memberId) {
   let response;
   try {
     const token = store.get(tokenAtom);
-    response = await axios.delete(`/CartItem/clear/${memberId}`, {
+    response =  await apiClient.delete(`/CartItem/clear/${memberId}`, {
       baseURL: import.meta.env.VITE_API_URL,
       headers: { Authorization: `Bearer ${token}` },
     });

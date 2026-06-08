@@ -16,7 +16,7 @@ export default function ProductCard({ product }) {
       const memberId = getMemberIdFromToken(token);
       const result = await addToCart(memberId, product.id, 1);
       if (result.success) {
-        setCartMessage("✓ ajouté");
+        setCartMessage("✓");
         setCartCount((prev) => prev + 1);
       } else {
         setCartMessage("! Erreur, Réessayez");

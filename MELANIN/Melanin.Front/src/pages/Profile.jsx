@@ -505,9 +505,7 @@ export default function Profile() {
                     ))}
                     {order.orderItems.length > 3 && (
                       <p className="text-[12px] text-brown-light dark:text-[#999] italic">
-                        et {order.orderItems.length - 3}
-                        autre {order.orderItems.length - 3 > 1 && "s"}
-                        article {order.orderItems.length - 3 > 1 && "s"}
+                        et {order.orderItems.length - 3} autre{order.orderItems.length - 3 > 1 ? "s" : ""} article{order.orderItems.length - 3 > 1 ? "s" : ""}
                       </p>
                     )}
                   </div>

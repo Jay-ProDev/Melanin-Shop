@@ -20,6 +20,10 @@ import Checkout from "./pages/Checkout";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancel from "./pages/PaymentCancel";
 import OrderDetail from "./pages/OrderDetail";
+import Livraison from "./pages/legal/Livraison";
+import Retours from "./pages/legal/Retours";
+import CGV from "./pages/legal/CGV";
+import Confidentialite from "./pages/legal/Confidentialite";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -127,7 +131,11 @@ function App() {
               </RequireAuth>
             }
           />
-
+          
+          <Route path="livraison" element={<Livraison />} />
+          <Route path="retours" element={<Retours />} />
+          <Route path="cgv" element={<CGV />} />
+          <Route path="confidentialite" element={<Confidentialite />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

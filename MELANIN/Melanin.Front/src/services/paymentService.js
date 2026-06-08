@@ -1,11 +1,11 @@
-import axios from "axios";
+import apiClient from "./apiClient";
 import { tokenAtom, store } from "../store";
 
 export async function createPaymentSession(orderId) {
   let response;
   try {
     const token = store.get(tokenAtom);
-    response = await axios.post(`/Payment/checkout-session/${orderId}`, null, {
+    response =  await apiClient.post(`/Payment/checkout-session/${orderId}`, null, {
       baseURL: import.meta.env.VITE_API_URL,
       headers: { Authorization: `Bearer ${token}` },
     });
