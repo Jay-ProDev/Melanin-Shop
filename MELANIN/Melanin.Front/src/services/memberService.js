@@ -1,5 +1,6 @@
 import axios from "axios";
 import { tokenAtom, store } from "../store";
+import apiClient from "./apiClient";
 
 export async function authRegister(firstName, lastName, email, password) {
   let response;
@@ -29,6 +30,26 @@ export async function authLogin(email, password) {
       { email, password },
       { baseURL: import.meta.env.VITE_API_URL },
     );
+  } catch (error) {
+    return {
+      success: false,
+      error: error.response?.data?.message ?? error.message,
+    };
+  }
+  return {
+    success: true,
+    data: response.data,
+  };
+}
+
+export async function getMe() {
+  let response;
+  try {
+    const token = store.get(tokenAtom);
+    response = await apiClient.get("/Member/me", {
+      baseURL: import.meta.env.VITE_API_URL,
+      headers: { Authorization: `Bearer ${token}` },
+    });
   } catch (error) {
     return {
       success: false,
