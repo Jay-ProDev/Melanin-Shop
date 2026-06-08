@@ -1,5 +1,6 @@
 ﻿using Melanin.Application.Interfaces.Repositories;
 using Melanin.Application.Interfaces.Services;
+using Melanin.Application.Interfaces.Utils;
 using Melanin.Domain.BusinessExecptions;
 using Melanin.Domain.Entities;
 using Soenneker.Hashing.Argon2;
@@ -10,10 +11,12 @@ namespace Melanin.Application.Services
     public class MemberService : IMemberService
     {
         private readonly IMemberRepository _memberRepository;
+        private readonly IMailerUtil _mailerUtil;
 
-        public MemberService(IMemberRepository memberRepository)
+        public MemberService(IMemberRepository memberRepository, IMailerUtil mailerUtil)
         {
             _memberRepository = memberRepository;
+            _mailerUtil = mailerUtil;
         }
 
         public async Task<Member> RegisterAsync(Member member)
@@ -32,7 +35,9 @@ namespace Melanin.Application.Services
             );
 
             // Convertir en entité et sauvegarder
-            return await _memberRepository.AddAsync(memberToRegister);
+            Member registered = await _memberRepository.AddAsync(memberToRegister);
+            await _mailerUtil.SendWelcomeEmailAsync(registered.Email, registered.FirstName);
+            return registered;
         }
 
 
@@ -51,7 +56,7 @@ namespace Melanin.Application.Services
             return member!;
         }
 
-       
+
         public async Task<Member> GetByIdAsync(int id)
         {
             Member? member = await _memberRepository.GetByIdAsync(id);
@@ -80,7 +85,7 @@ namespace Melanin.Application.Services
             if (member is null)
                 throw new MemberNotFoundException();
 
-            await _memberRepository.DeleteAsync(id); 
+            await _memberRepository.DeleteAsync(id);
         }
     }
 }

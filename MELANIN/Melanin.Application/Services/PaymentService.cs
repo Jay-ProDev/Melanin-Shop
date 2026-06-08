@@ -12,15 +12,18 @@ namespace Melanin.Application.Services
         private readonly IPaymentRepository _paymentRepository;
         private readonly IOrderService _orderService;
         private readonly IStripeUtil _stripeUtil;
+        private readonly IMailerUtil _mailerUtil;
 
         public PaymentService(
             IPaymentRepository paymentRepository,
             IOrderService orderService,
-            IStripeUtil stripeUtil)
+            IStripeUtil stripeUtil,
+            IMailerUtil mailerUtil)
         {
             _paymentRepository = paymentRepository;
             _orderService = orderService;
             _stripeUtil = stripeUtil;
+            _mailerUtil = mailerUtil;
         }
 
         public async Task<string> CreateCheckoutSessionAsync(int orderId, int memberId)
@@ -67,6 +70,10 @@ namespace Melanin.Application.Services
 
             // 6. Confirmer la commande associée (Pending → Confirmed)
             await _orderService.ConfirmAsync(payment.OrderId);
+
+            // 7. Envoyer l'email de confirmation au membre
+            Order order = await _orderService.GetByIdAsync(payment.OrderId);
+            await _mailerUtil.SendOrderConfirmedEmailAsync(order.Member.Email, order.Member.FirstName, order.Id, order.TotalPrice);
         }
     }
 }

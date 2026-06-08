@@ -1,5 +1,6 @@
 ﻿using Melanin.Application.Interfaces.Repositories;
 using Melanin.Application.Interfaces.Services;
+using Melanin.Application.Interfaces.Utils;
 using Melanin.Domain.BusinessExecptions;
 using Melanin.Domain.Entities;
 using Melanin.Domain.Enums;
@@ -12,17 +13,20 @@ namespace Melanin.Application.Services
         private readonly IAddressRepository _addressRepository;
         private readonly ICartItemRepository _cartItemRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IMailerUtil _mailerUtil;
 
         public OrderService(
             IOrderRepository orderRepository,
             IAddressRepository addressRepository,
             ICartItemRepository cartItemRepository,
-            IProductRepository productRepository)
+            IProductRepository productRepository,
+            IMailerUtil mailerUtil)
         {
             _orderRepository = orderRepository;
             _addressRepository = addressRepository;
             _cartItemRepository = cartItemRepository;
             _productRepository = productRepository;
+            _mailerUtil = mailerUtil;
         }
 
         // ===== Lecture =====
@@ -80,6 +84,7 @@ namespace Melanin.Application.Services
             order.Ship();
 
             await _orderRepository.UpdateAsync(order);
+            await _mailerUtil.SendOrderShippedEmailAsync(order.Member.Email, order.Member.FirstName, order.Id);
         }
 
         public async Task DeliverAsync(int orderId)
@@ -91,6 +96,7 @@ namespace Melanin.Application.Services
             order.Deliver();
 
             await _orderRepository.UpdateAsync(order);
+            await _mailerUtil.SendOrderDeliveredEmailAsync(order.Member.Email, order.Member.FirstName, order.Id);
         }
 
         public async Task CancelByAdminAsync(int orderId)
