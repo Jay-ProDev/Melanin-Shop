@@ -34,6 +34,7 @@ export default function Navbar() {
   return (
     <nav
       className="flex items-center justify-between px-10 py-5 border-b
+            sticky top-0 z-50
             bg-white dark:bg-[#0A0A0A]
             border-beige-dark dark:border-[#1F1F1F]"
     >
