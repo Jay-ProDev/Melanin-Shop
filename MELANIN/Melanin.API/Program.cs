@@ -3,6 +3,7 @@ using Melanin.API.Token;
 using Melanin.Application.Interfaces.Repositories;
 using Melanin.Application.Interfaces.Services;
 using Melanin.Application.Interfaces.Utils;
+using Melanin.Infrastructure.Mailer;
 using Melanin.Application.Services;
 using Melanin.Infrastructure.Database;
 using Melanin.Infrastructure.Database.Repositories;
@@ -110,6 +111,20 @@ builder.Services.AddScoped<IStripeUtil>(provider =>
             ?? throw new Exception("Stripe:CancelUrl non défini dans la config !")
     )
 );
+
+// === Mailer ===
+builder.Services.AddSingleton<IMailerUtil>(sp =>
+{
+    IConfiguration config = sp.GetRequiredService<IConfiguration>();
+    return new MailerUtil(
+        config["Mailer:Host"]!,
+        int.Parse(config["Mailer:Port"]!),
+        config["Mailer:Username"]!,
+        config["Mailer:Password"]!,
+        config["Mailer:AppEmail"]!,
+        config["Mailer:AppName"]!
+    );
+});
 
 builder.Services.AddAuthorization();
 
