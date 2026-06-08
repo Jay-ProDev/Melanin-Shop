@@ -5,9 +5,12 @@ import { authRegister } from "../services/memberService";
 export default function Register() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const registerAction = async (formData) => {
+    if (isSubmitting) return;
     setError("");
+    setIsSubmitting(true);
     const result = await authRegister(
       formData.get("firstName"),
       formData.get("lastName"),
@@ -17,8 +20,10 @@ export default function Register() {
 
     if (result.success) {
       navigate("/login");
+      setIsSubmitting(false);
     } else {
       setError(result.error);
+      setIsSubmitting(false);
     }
   };
 
@@ -123,11 +128,12 @@ export default function Register() {
         </div>
         <button
           type="submit"
+          disabled={isSubmitting}
           className="mt-2 py-3 text-[12px] tracking-[2px] cursor-pointer font-medium 
                         text-beige bg-brown hover:bg-brown-dark
                         dark:text-[#0A0A0A] dark:bg-rose-gold dark:hover:bg-rose-gold-dark"
         >
-          S'INSCRIRE
+          {isSubmitting ? "INSCRIPTION EN COURS..." : "S'INSCRIRE"}
         </button>
       </form>
     </div>
