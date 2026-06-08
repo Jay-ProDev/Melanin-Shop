@@ -1,11 +1,11 @@
-import axios from "axios";
+import apiClient from "./apiClient";
 import { tokenAtom, store } from "../store";
 
 export async function getAddress() {
   let response;
   try {
     const token = store.get(tokenAtom);
-    response = await axios.get("/Address", {
+    response =  await apiClient.get("/Address", {
       baseURL: import.meta.env.VITE_API_URL,
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -25,7 +25,7 @@ export async function createAddress(addressData) {
   let response;
   try {
     const token = store.get(tokenAtom);
-    response = await axios.post("/Address", addressData, {
+    response =  await apiClient.post("/Address", addressData, {
       baseURL: import.meta.env.VITE_API_URL,
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -45,7 +45,7 @@ export async function updateAddress(id, addressData) {
   let response;
   try {
     const token = store.get(tokenAtom);
-    response = await axios.put(`/Address/${id}`, addressData, {
+    response =  await apiClient.put(`/Address/${id}`, addressData, {
       baseURL: import.meta.env.VITE_API_URL,
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -65,7 +65,7 @@ export async function deleteAddress(id) {
   let response;
   try {
     const token = store.get(tokenAtom);
-    response = await axios.delete(`/Address/${id}`, {
+    response =  await apiClient.delete(`/Address/${id}`, {
       baseURL: import.meta.env.VITE_API_URL,
       headers: { Authorization: `Bearer ${token}` },
     });
