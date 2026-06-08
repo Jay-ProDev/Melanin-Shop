@@ -1,4 +1,5 @@
-﻿using Melanin.API.DTO.Mappers;
+﻿using System.Security.Claims;
+using Melanin.API.DTO.Mappers;
 using Melanin.API.DTO.Request;
 using Melanin.API.Token;
 using Melanin.Application.Interfaces.Services;
@@ -59,6 +60,21 @@ public class MemberController : ControllerBase
         }
     }
 
+    [HttpGet("me")]
+    [Authorize]
+    public async Task<IActionResult> GetMe()
+    {
+        try
+        {
+            int memberId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            Member result = await _memberService.GetByIdAsync(memberId);
+            return Ok(result.ToDto());
+        }
+        catch (MemberNotFoundException ex)
+        {
+            return NotFound(new { ex.Message });
+        }
+    }
 
     [HttpGet("{id}")]
     [Authorize(Roles = "Admin")]

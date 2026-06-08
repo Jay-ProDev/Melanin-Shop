@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useSearchParams, useNavigate } from "react-router";
 import { useAtom } from "jotai";
 import { tokenAtom, getMemberIdFromToken } from "../store";
-import { getMemberById, updateMember } from "../services/memberService";
+import { getMe, updateMember } from "../services/memberService";
 import {
   getAddress,
   createAddress,
@@ -30,9 +30,8 @@ export default function Profile() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const memberId = getMemberIdFromToken(token);
       const [memberResult, addressResult, ordersResult] = await Promise.all([
-        getMemberById(memberId),
+        getMe(),
         getAddress(),
         getMyOrders(),
       ]);
@@ -57,7 +56,7 @@ export default function Profile() {
     );
     if (result.success) {
       setMemberSuccess("Informations mises à jour !");
-      const updated = await getMemberById(memberId);
+      const updated = await getMe();
       if (updated.success) setMember(updated.data);
       setEditingMember(false);
     } else {
