@@ -3,6 +3,7 @@ using Melanin.API.DTO.Request;
 using Melanin.Application.Interfaces.Services;
 using Melanin.Domain.BusinessExecptions;
 using Melanin.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Melanin.API.Controllers;
@@ -19,6 +20,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     [EndpointSummary("Créer un produit")]
     public async Task<IActionResult> Create([FromBody] CreateProductDTO dto)
     {
@@ -81,6 +83,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     [EndpointSummary("Modifier un produit")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateProductDTO dto)
     {
@@ -98,6 +101,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPut("{id}/activate")]
+    [Authorize(Roles = "Admin")]
     [EndpointSummary("Activer un produit")]
     public async Task<IActionResult> Activate(int id)
     {
@@ -115,6 +119,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPut("{id}/deactivate")]
+    [Authorize(Roles = "Admin")]
     [EndpointSummary("Désactiver un produit")]
     public async Task<IActionResult> Deactivate(int id)
     {
@@ -132,6 +137,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost("{id}/image")]
+    [Authorize(Roles = "Admin")]
     [EndpointSummary("Upload une image pour un produit")]
     public async Task<IActionResult> UploadImage(int id, IFormFile file)
     {
@@ -184,6 +190,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPut("{id}/stock/increase")]
+    [Authorize(Roles = "Admin")]
     [EndpointSummary("Réapprovisionner le stock")]
     public async Task<IActionResult> IncreaseStock(int id, [FromBody] UpdateStockDTO dto)
     {
@@ -201,6 +208,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPut("{id}/stock/decrease")]
+    [Authorize(Roles = "Admin")]
     [EndpointSummary("Diminuer le stock manuellement")]
     public async Task<IActionResult> DecreaseStock(int id, [FromBody] UpdateStockDTO dto)
     {
@@ -226,6 +234,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     [EndpointSummary("Supprimer un produit")]
     public async Task<IActionResult> Delete(int id)
     {

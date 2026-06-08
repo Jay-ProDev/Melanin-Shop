@@ -4,6 +4,7 @@ using Melanin.API.Token;
 using Melanin.Application.Interfaces.Services;
 using Melanin.Domain.BusinessExecptions;
 using Melanin.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Melanin.API.Controllers;
@@ -51,10 +52,7 @@ public class MemberController : ControllerBase
 
             return Ok(new { Message = "Connexion réussie !", Token = token });
         }
-        catch (MemberNotFoundException ex)
-        {
-            return Unauthorized(new { ex.Message });
-        }
+
         catch (MemberBadCredentialException ex)
         {
             return Unauthorized(new { ex.Message });
@@ -63,6 +61,7 @@ public class MemberController : ControllerBase
 
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetById(int id)
     {
         try
@@ -77,6 +76,7 @@ public class MemberController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAll()
     {
         IEnumerable<Member> result = await _memberService.GetAllAsync();
@@ -85,6 +85,7 @@ public class MemberController : ControllerBase
 
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateMemberDTO dto)
     {
         try
@@ -103,6 +104,7 @@ public class MemberController : ControllerBase
 
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         try
