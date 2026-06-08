@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Commande confirmée</title>
+</head>
+<body style="margin:0;padding:0;background:#f7f7f7;font-family:Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+            <td align="center" style="padding:30px 0;">
+                <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:8px;overflow:hidden;">
+                    <tr>
+                        <td style="background:#8B4513;padding:24px 32px;">
+                            <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:700;">Melanin Shop</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:32px;">
+                            <h2 style="margin:0 0 16px;color:#8B4513;font-size:18px;">Commande confirmée ✅</h2>
+                            <p style="margin:0 0 16px;color:#333333;font-size:14px;line-height:1.6;">
+                                Bonjour {{FirstName}},
+                            </p>
+                            <p style="margin:0 0 16px;color:#333333;font-size:14px;line-height:1.6;">
+                                Ta commande a bien été reçue et confirmée.
+                            </p>
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f7f7f7;border-radius:6px;padding:16px;">
+                                <tr>
+                                    <td style="padding:8px 16px;font-size:14px;color:#333333;">Numéro de commande</td>
+                                    <td style="padding:8px 16px;font-size:14px;color:#8B4513;font-weight:700;text-align:right;">#{{OrderId}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:8px 16px;font-size:14px;color:#333333;">Montant total</td>
+                                    <td style="padding:8px 16px;font-size:14px;color:#8B4513;font-weight:700;text-align:right;">{{TotalPrice}}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background:#f7f7f7;padding:16px 32px;">
+                            <p style="margin:0;color:#888888;font-size:12px;">L'équipe Melanin Shop</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

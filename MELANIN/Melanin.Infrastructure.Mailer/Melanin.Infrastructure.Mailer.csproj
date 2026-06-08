@@ -7,16 +7,27 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Templates\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MailKit" Version="4.16.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Melanin.Application\Melanin.Application.csproj" />
     <ProjectReference Include="..\Melanin.Domain\Melanin.Domain.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="Templates\WelcomeTemplate.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\OrderConfirmedTemplate.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\OrderShippedTemplate.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\OrderDeliveredTemplate.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
