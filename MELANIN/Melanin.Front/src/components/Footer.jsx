@@ -206,28 +206,28 @@ export default function Footer() {
               INFORMATIONS
             </p>
             <Link
-              to="/"
+              to="/livraison"
               className="text-[13px] hover:opacity-70
                             text-brown-light dark:text-[#777]"
             >
               Livraison
             </Link>
             <Link
-              to="/"
+              to="/retours"
               className="text-[13px] hover:opacity-70
                             text-brown-light dark:text-[#777]"
             >
               Retours & échanges
             </Link>
             <Link
-              to="/"
+              to="/cgv"
               className="text-[13px] hover:opacity-70
                             text-brown-light dark:text-[#777]"
             >
               CGV
             </Link>
             <Link
-              to="/"
+              to="/confidentialite"
               className="text-[13px] hover:opacity-70
                             text-brown-light dark:text-[#777]"
             >
