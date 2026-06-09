@@ -16,25 +16,29 @@ export default function Register() {
     { label: "Un caractère spécial", valid: /[^A-Za-z0-9]/.test(password) },
   ];
 
-  const registerAction = async (formData) => {
+  const registerAction = async (e) => {
+    e.preventDefault();
     if (isSubmitting) return;
     setError("");
     setIsSubmitting(true);
+
+    const formData = new FormData(e.target);
+
     const result = await authRegister(
-      formData.get("firstName"),
-      formData.get("lastName"),
-      formData.get("email"),
-      formData.get("password"),
+        formData.get("firstName"),
+        formData.get("lastName"),
+        formData.get("email"),
+        formData.get("password"),
     );
 
+    setIsSubmitting(false);
+
     if (result.success) {
-      navigate("/login");
-      setIsSubmitting(false);
+        navigate("/login");
     } else {
-      setError(result.error);
-      setIsSubmitting(false);
+        setError(result.error);
     }
-  };
+};
 
   return (
     <div className="flex flex-col items-center justify-center py-28 px-8">
@@ -54,7 +58,7 @@ export default function Register() {
       {error && <p className="text-[13px] mb-4 text-red-500">{error}</p>}
 
       <form
-        action={registerAction}
+        onSubmit={registerAction}
         className="flex flex-col gap-4 w-full max-w-[440px]"
       >
         <div className="flex gap-4">
