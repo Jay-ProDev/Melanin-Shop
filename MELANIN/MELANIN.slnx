@@ -14,4 +14,7 @@
   <Folder Name="/Presentation/">
     <Project Path="Melanin.API/Melanin.API.csproj" Id="f9c8c06d-8d20-45e4-ac7a-c604041d513d" />
   </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Melanin.Tests/Melanin.Tests.csproj" />
+  </Folder>
 </Solution>
