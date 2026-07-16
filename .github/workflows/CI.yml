@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore dependencies
+        run: dotnet restore MELANIN/MELANIN.slnx
+
+      - name: Build
+        run: dotnet build MELANIN/MELANIN.slnx --no-restore --configuration Release
+
+      - name: Test
+        run: dotnet test MELANIN/MELANIN.slnx --no-build --configuration Release
+
+      - name: Send email notification
+        if: always()
+        uses: dawidd6/action-send-mail@v9
+        with:
+          server_address: ${{ vars.MAIL_SERVER }}
+          server_port: ${{ vars.MAIL_PORT }}
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          from: Melanin CI <${{ secrets.MAIL_USERNAME }}>
+          to: melaninshop.noreply@gmail.com
+          subject: "CI ${{ job.status }} - ${{ github.repository }}"
+          html_body: |
+            <h2>Résultat de la CI : ${{ job.status }}</h2>
+            <p>Branche : ${{ github.head_ref || github.ref_name }}</p>
+            <p>Commit : ${{ github.sha }}</p>
+            <p>Déclenché par : ${{ github.actor }}</p>
