@@ -18,10 +18,6 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // === Database ===
-// builder.Services.AddDbContext<MelaninDbContext>(options =>
-//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-// );
-
 var provider = builder.Configuration.GetValue<string>("DatabaseProvider") ?? "SqlServer";
 
 builder.Services.AddDbContext<MelaninDbContext>(options =>
@@ -151,6 +147,13 @@ builder.Services.AddOpenApi(options =>
 
 
 var app = builder.Build();
+
+// === Appliquer les migrations au démarrage (création auto de la base en conteneur) ===
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<MelaninDbContext>();
+    db.Database.Migrate();
+}
 
 // === Middleware ===
 if (app.Environment.IsDevelopment())

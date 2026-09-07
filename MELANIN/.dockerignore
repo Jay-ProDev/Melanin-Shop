@@ -1,0 +1,25 @@
+# Build Windows → incompatible avec le conteneur Linux
+**/bin/
+**/obj/
+
+# Frontend React → l'API backend n'en a pas besoin
+Melanin.Front/
+
+# Tests → lancés par la CI, inutiles dans l'image de prod
+Melanin.Tests/
+
+# Base de données SQLite (données locales) → jamais dans l'image
+*.db
+*.db-shm
+*.db-wal
+
+# Secrets & config locale
+.env
+**/appsettings.Development.json
+**/*.user
+
+# Git & Docker eux-mêmes
+.git/
+.gitignore
+Dockerfile
+.dockerignore
