@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Melanin.Infrastructure\Melanin.Infrastructure.Database.csproj" />
+    <ProjectReference Include="..\Melanin.Infrastructure.Database\Melanin.Infrastructure.Database.csproj" />
   </ItemGroup>
 
   <ItemGroup>
