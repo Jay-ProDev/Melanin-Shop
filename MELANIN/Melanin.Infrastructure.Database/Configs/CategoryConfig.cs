@@ -13,10 +13,10 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
 
         // Clé primaire
         builder.HasKey(c => c.Id)
-            .HasName("PK_Category")
-            .IsClustered();
+            .HasName("PK_Category");
 
-        // Colonnes
+        #region Les colonnes
+
         builder.Property(c => c.Id)
             .HasColumnName("Id_Category")
             .ValueGeneratedOnAdd();
@@ -34,11 +34,17 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
             .IsUnique()
             .HasDatabaseName("IDX_Category__slug");
 
+        #endregion
+
+        #region Les relations
+
         // Relations : une Category a plusieurs Products
         builder.HasMany(c => c.Products)
             .WithOne(p => p.Category)
             .HasForeignKey(p => p.CategoryId)
             .HasConstraintName("FK_Product__Category")
             .OnDelete(DeleteBehavior.Restrict);
+
+        #endregion
     }
 }

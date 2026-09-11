@@ -13,10 +13,10 @@ internal class PaymentConfiguration : IEntityTypeConfiguration<Payment>
 
         // Clé primaire
         builder.HasKey(p => p.Id)
-            .HasName("PK_Payment")
-            .IsClustered();
+            .HasName("PK_Payment");
 
-        // Colonnes
+        #region Les colonnes
+
         builder.Property(p => p.Id)
             .HasColumnName("Id_Payment")
             .ValueGeneratedOnAdd();
@@ -31,8 +31,7 @@ internal class PaymentConfiguration : IEntityTypeConfiguration<Payment>
             .HasMaxLength(50)
             .IsRequired();
 
-        builder.Property(p => p.PaidAt)
-            .HasColumnType("datetime");
+        builder.Property(p => p.PaidAt);
 
         builder.Property(p => p.StripeSessionId)
             .IsRequired()
@@ -41,11 +40,13 @@ internal class PaymentConfiguration : IEntityTypeConfiguration<Payment>
         // Index unique sur StripeSessionId : lookup rapide depuis le webhook
         builder.HasIndex(p => p.StripeSessionId)
             .IsUnique()
-            .HasDatabaseName("IDX_Payment__stripeSessionId");   
+            .HasDatabaseName("IDX_Payment__stripeSessionId");
 
         // Clés étrangères
         builder.Property(p => p.OrderId)
             .HasColumnName("Id_Order");
+
+        #endregion
 
         // Relation Payment → Order :
         // déclarée côté Order (HasMany Payments) dans OrderConfiguration,

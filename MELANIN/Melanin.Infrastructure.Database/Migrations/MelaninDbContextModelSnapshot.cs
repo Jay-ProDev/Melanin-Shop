@@ -17,7 +17,7 @@ namespace Melanin.Infrastructure.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.7")
+                .HasAnnotation("ProductVersion", "10.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -66,8 +66,6 @@ namespace Melanin.Infrastructure.Database.Migrations
                     b.HasKey("Id")
                         .HasName("PK_Address");
 
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"));
-
                     b.HasIndex("MemberId");
 
                     b.ToTable("Address", (string)null);
@@ -100,8 +98,6 @@ namespace Melanin.Infrastructure.Database.Migrations
                     b.HasKey("Id")
                         .HasName("PK_CartItem");
 
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"));
-
                     b.HasIndex("MemberId");
 
                     b.HasIndex("ProductId");
@@ -131,8 +127,6 @@ namespace Melanin.Infrastructure.Database.Migrations
                     b.HasKey("Id")
                         .HasName("PK_Category");
 
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"));
-
                     b.HasIndex("Slug")
                         .IsUnique()
                         .HasDatabaseName("IDX_Category__slug");
@@ -150,7 +144,7 @@ namespace Melanin.Infrastructure.Database.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -182,8 +176,6 @@ namespace Melanin.Infrastructure.Database.Migrations
                     b.HasKey("Id")
                         .HasName("PK_Member");
 
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"));
-
                     b.HasIndex("Email")
                         .IsUnique()
                         .HasDatabaseName("IDX_Member__email");
@@ -209,7 +201,7 @@ namespace Melanin.Infrastructure.Database.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("MemberId")
                         .HasColumnType("int")
@@ -230,8 +222,6 @@ namespace Melanin.Infrastructure.Database.Migrations
 
                     b.HasKey("Id")
                         .HasName("PK_Order");
-
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"));
 
                     b.HasIndex("BillingAddressId");
 
@@ -269,8 +259,6 @@ namespace Melanin.Infrastructure.Database.Migrations
                     b.HasKey("Id")
                         .HasName("PK_OrderItem");
 
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"));
-
                     b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
@@ -296,7 +284,7 @@ namespace Melanin.Infrastructure.Database.Migrations
                         .HasColumnName("Id_Order");
 
                     b.Property<DateTime?>("PaidAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -310,8 +298,6 @@ namespace Melanin.Infrastructure.Database.Migrations
 
                     b.HasKey("Id")
                         .HasName("PK_Payment");
-
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"));
 
                     b.HasIndex("OrderId");
 
@@ -339,7 +325,7 @@ namespace Melanin.Infrastructure.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -379,8 +365,6 @@ namespace Melanin.Infrastructure.Database.Migrations
 
                     b.HasKey("Id")
                         .HasName("PK_Product");
-
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"));
 
                     b.HasIndex("CategoryId");
 

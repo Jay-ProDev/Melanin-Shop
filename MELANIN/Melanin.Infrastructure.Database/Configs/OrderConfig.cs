@@ -14,10 +14,10 @@ internal class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         // Clé primaire
         builder.HasKey(o => o.Id)
-            .HasName("PK_Order")
-            .IsClustered();
+            .HasName("PK_Order");
 
-        // Colonnes
+        #region Les colonnes
+
         builder.Property(o => o.Id)
             .HasColumnName("Id_Order")
             .ValueGeneratedOnAdd();
@@ -26,8 +26,7 @@ internal class OrderConfiguration : IEntityTypeConfiguration<Order>
             .IsRequired()
             .HasPrecision(10, 2);
 
-        builder.Property(o => o.CreatedAt)
-            .HasColumnType("datetime");
+        builder.Property(o => o.CreatedAt);
 
         // Enum stocké en string
         builder.Property(o => o.Status)
@@ -49,7 +48,9 @@ internal class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(o => o.BillingAddressId)
             .HasColumnName("Id_BillingAddress");
 
-        // Relations
+        #endregion
+
+        #region Les relations
 
         // Order a plusieurs OrderItems (cascade : OrderItem n'existe pas sans Order)
         builder.HasMany(o => o.OrderItems)
@@ -79,5 +80,7 @@ internal class OrderConfiguration : IEntityTypeConfiguration<Order>
             .HasForeignKey(p => p.OrderId)
             .HasConstraintName("FK_Payment__Order")
             .OnDelete(DeleteBehavior.Restrict);
+
+        #endregion
     }
 }

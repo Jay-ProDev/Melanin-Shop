@@ -11,8 +11,9 @@ internal class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
         builder.ToTable("OrderItem");
 
         builder.HasKey(oi => oi.Id)
-            .HasName("PK_OrderItem")
-            .IsClustered();
+            .HasName("PK_OrderItem");
+
+        #region Les colonnes
 
         builder.Property(oi => oi.Id)
             .HasColumnName("Id_OrderItem")
@@ -31,6 +32,9 @@ internal class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
         builder.Property(oi => oi.ProductId)
             .HasColumnName("Id_Product");
 
+        #endregion
+
+        #region Les relations
         // Relation OrderItem → Product (Product n'a pas de collection)
         // Restrict : protéger l'historique comptable des commandes
         builder.HasOne(oi => oi.Product)
@@ -40,5 +44,7 @@ internal class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
             .OnDelete(DeleteBehavior.Restrict);
 
         // Relation OrderItem → Order définie dans OrderConfiguration (un seul sens)
+
+        #endregion
     }
 }
