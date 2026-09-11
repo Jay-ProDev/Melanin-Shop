@@ -15,10 +15,10 @@ internal class MemberConfiguration : IEntityTypeConfiguration<Member>
 
         // Clé primaire
         builder.HasKey(m => m.Id)
-            .HasName("PK_Member")
-            .IsClustered();
+            .HasName("PK_Member");
 
-        // Colonnes
+        #region Les colonnes
+
         builder.Property(m => m.Id)
             .HasColumnName("Id_Member")
             .ValueGeneratedOnAdd();
@@ -35,7 +35,7 @@ internal class MemberConfiguration : IEntityTypeConfiguration<Member>
             .IsRequired()
             .HasMaxLength(320);
 
-        // Email unique (comme dans ton script SQL)
+        // Email unique (comme dans mon script SQL)
         builder.HasIndex(m => m.Email)
             .IsUnique()
             .HasDatabaseName("IDX_Member__email");
@@ -52,9 +52,11 @@ internal class MemberConfiguration : IEntityTypeConfiguration<Member>
             .HasMaxLength(50)
             .IsRequired();
 
+        builder.Property(m => m.CreatedAt);
 
-        builder.Property(m => m.CreatedAt)
-            .HasColumnType("datetime");
+        #endregion
+
+        #region Les relations
 
         // Relations : un Member a plusieurs Addresses
         builder.HasMany(m => m.Addresses)
@@ -76,5 +78,7 @@ internal class MemberConfiguration : IEntityTypeConfiguration<Member>
             .HasForeignKey(o => o.MemberId)
             .HasConstraintName("FK_Order__Member")
             .OnDelete(DeleteBehavior.Restrict);
+
+        #endregion
     }
 }

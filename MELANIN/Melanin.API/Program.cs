@@ -29,6 +29,13 @@ builder.Services.AddDbContext<MelaninDbContext>(options =>
             b => b.MigrationsAssembly("Melanin.Infrastructure.Database.Sqlite")
         );
     }
+    else if (provider == "Postgres")
+    {
+        options.UseNpgsql(
+            builder.Configuration.GetConnectionString("Postgres"),
+            b => b.MigrationsAssembly("Melanin.Infrastructure.Database.Postgres")
+        );
+    }
     else
     {
         options.UseSqlServer(

@@ -11,8 +11,9 @@ internal class AddressConfiguration : IEntityTypeConfiguration<Address>
         builder.ToTable("Address");
 
         builder.HasKey(a => a.Id)
-            .HasName("PK_Address")
-            .IsClustered();
+            .HasName("PK_Address");
+
+        #region Les colonnes
 
         builder.Property(a => a.Id)
             .HasColumnName("Id_Address")
@@ -40,5 +41,7 @@ internal class AddressConfiguration : IEntityTypeConfiguration<Address>
 
         builder.Property(a => a.FullName)
             .HasMaxLength(100);
+
+        #endregion
     }
 }

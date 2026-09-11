@@ -14,10 +14,10 @@ internal class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         // Clé primaire
         builder.HasKey(p => p.Id)
-            .HasName("PK_Product")
-            .IsClustered();
+            .HasName("PK_Product");
 
-        // Colonnes
+        #region Les colonnes
+
         builder.Property(p => p.Id)
             .HasColumnName("Id_Product")
             .ValueGeneratedOnAdd();
@@ -40,8 +40,7 @@ internal class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(p => p.ImageUrl)
             .HasMaxLength(255);
 
-        builder.Property(p => p.CreatedAt)
-            .HasColumnType("datetime");
+        builder.Property(p => p.CreatedAt);
 
         builder.Property(p => p.IsActive)
             .IsRequired();
@@ -64,5 +63,7 @@ internal class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasConversion<string>()
             .HasSentinel(0)
             .HasMaxLength(20);
+
+        #endregion
     }
 }

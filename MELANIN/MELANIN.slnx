@@ -10,6 +10,7 @@
     <Project Path="Melanin.Infrastructure.Database.Sqlite/Melanin.Infrastructure.Database.Sqlite.csproj" />
     <Project Path="Melanin.Infrastructure.Stripe/Melanin.Infrastructure.Stripe.csproj" Id="0fb6df30-1c7f-4ded-a0e0-619d13121df2" />
     <Project Path="Melanin.Infrastructure.Database/Melanin.Infrastructure.Database.csproj" Id="3e922ab2-e9af-4fd8-8f4d-78742b0f9f96" />
+    <Project Path="Melanin.Infrastructure.Database.Postgres/Melanin.Infrastructure.Database.Postgres.csproj" />
   </Folder>
   <Folder Name="/Presentation/">
     <Project Path="Melanin.API/Melanin.API.csproj" Id="f9c8c06d-8d20-45e4-ac7a-c604041d513d" />
