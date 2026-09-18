@@ -155,11 +155,12 @@ builder.Services.AddOpenApi(options =>
 
 var app = builder.Build();
 
-// === Appliquer les migrations au démarrage (création auto de la base en conteneur) ===
+// === Migrations + seeding au démarrage ===
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<MelaninDbContext>();
-    db.Database.Migrate();
+    db.Database.Migrate();                 // 1. crée/met à jour les tables (schéma)
+    await DatabaseSeeder.SeedAsync(db);    // 2. remplit les tables si la base est vide
 }
 
 // === Middleware ===

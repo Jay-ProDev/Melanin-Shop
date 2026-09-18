@@ -23,6 +23,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - DatabaseProvider=SqlServer
       - ConnectionStrings__SqlServer=Server=db;Database=MelaninDb;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True;
+      - MELANIN_ADMIN_PASSWORD=${MELANIN_ADMIN_PASSWORD}
     depends_on:
       db:
         condition: service_healthy
