@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Melanin.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(MelaninDbContext))]
-    [Migration("20260911192405_MakeModelProviderAgnostic")]
+    [Migration("20260917190431_MakeModelProviderAgnostic")]
     partial class MakeModelProviderAgnostic
     {
         /// <inheritdoc />

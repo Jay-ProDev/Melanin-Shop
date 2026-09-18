@@ -3,6 +3,7 @@ using System;
 using Melanin.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Melanin.Infrastructure.Database.Sqlite.Migrations
 {
     [DbContext(typeof(MelaninDbContext))]
-    partial class MelaninDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260915032832_MakeModelProviderAgnostic")]
+    partial class MakeModelProviderAgnostic
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.8");
