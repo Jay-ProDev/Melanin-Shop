@@ -67,4 +67,11 @@ public class Member
         Email = email;
     }
 
+    // Promotion volontaire au rôle admin (le constructeur crée toujours un User).
+    // Utilisé par le seeder pour créer le compte administrateur initial.
+    public void PromoteToAdmin()
+    {
+        Role = MemberRole.Admin;
+    }
+
 }
