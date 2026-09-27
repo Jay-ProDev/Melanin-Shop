@@ -18,6 +18,8 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // === Database ===
+// Bases distantes (SQL Server / Postgres) : EnableRetryOnFailure() réessaie
+// automatiquement de se connecter (base serverless en réveil, coupure réseau).
 var provider = builder.Configuration.GetValue<string>("DatabaseProvider") ?? "SqlServer";
 
 builder.Services.AddDbContext<MelaninDbContext>(options =>
@@ -33,14 +35,22 @@ builder.Services.AddDbContext<MelaninDbContext>(options =>
     {
         options.UseNpgsql(
             builder.Configuration.GetConnectionString("Postgres"),
-            b => b.MigrationsAssembly("Melanin.Infrastructure.Database.Postgres")
+            b =>
+            {
+                b.MigrationsAssembly("Melanin.Infrastructure.Database.Postgres");
+                b.EnableRetryOnFailure();
+            }
         );
     }
     else
     {
         options.UseSqlServer(
             builder.Configuration.GetConnectionString("SqlServer"),
-            b => b.MigrationsAssembly("Melanin.Infrastructure.Database")
+            b =>
+            {
+                b.MigrationsAssembly("Melanin.Infrastructure.Database");
+                b.EnableRetryOnFailure();
+            }
         );
     }
 });
