@@ -35,21 +35,6 @@ public static class DatabaseSeeder
 
         context.Members.Add(admin);
 
-        // --- Admin démo (partagé avec les collègues pour tester le back-office) ---
-        // Mot de passe en dur volontairement : ce compte est fait pour être partagé,
-        // donc pas un secret à protéger (contrairement à l'admin principal).
-        string adminDemoHash = await Argon2HashingUtil.Hash("AdminDemo1234=");
-
-        Member adminDemo = new Member(
-            firstName: "Admin",
-            lastName: "Démo",
-            email: "admin.demo@melanin.be",
-            passwordHash: adminDemoHash);
-
-        adminDemo.PromoteToAdmin();
-
-        context.Members.Add(adminDemo);
-
         #endregion
 
         #region  --- Clients démo ---
