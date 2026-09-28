@@ -15,6 +15,9 @@ using Scalar.AspNetCore;
 using System.Text;
 using System.Text.Json.Serialization;
 
+// Lit le fichier .env et ajoute ses valeurs aux variables d'environnement de l'API.
+DotNetEnv.Env.TraversePath().Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // === Database ===
