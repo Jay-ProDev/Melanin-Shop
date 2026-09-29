@@ -21,9 +21,18 @@ services:
       - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - DatabaseProvider=SqlServer
-      - ConnectionStrings__SqlServer=Server=db;Database=MelaninDb;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True;
+      # --- Admin (seeder) ---
       - MELANIN_ADMIN_PASSWORD=${MELANIN_ADMIN_PASSWORD}
+      # --- Authentification JWT ---
+      - Token__Key=${Token__Key}
+      # --- Stripe ---
+      - Stripe__SecretKey=${Stripe__SecretKey}
+      - Stripe__WebhookSecret=${Stripe__WebhookSecret}
+      # --- Mailer ---
+      - Mailer__Password=${Mailer__Password}
+      # --- Base de données (conteneur SQL Server "db") ---
+      - DatabaseProvider=SqlServer
+      - ConnectionStrings__SqlServer=Server=db;Database=MelaninDb;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True; 
     depends_on:
       db:
         condition: service_healthy
