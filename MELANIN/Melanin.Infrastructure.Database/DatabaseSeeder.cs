@@ -104,32 +104,40 @@ public static class DatabaseSeeder
         int perruquesId = categories[2].Id; // "Perruques"
         int accessoiresId = categories[3].Id; // "Accessoires"
 
+        // Associe une photo du catalogue de démo (wwwroot/images/seed/) au produit.
+        // Ces photos sont commitées → présentes dans chaque image Docker, jamais perdues.
+        static Product WithImage(Product product, string fileName)
+        {
+            product.SetImageUrl($"/images/seed/{fileName}");
+            return product;
+        }
+
         Product[] products =
         [
             // -- Soins Capillaires --
-            new Product("Huile de Ricin 100% Pure", "Huile 100% pure pour stimuler la pousse et renforcer les racines. 60 ml.", 14.90m, 50, soinsId),
-            new Product("Huile de Ricin & Romarin", "Huile fortifiante 100% naturelle, pousse et réparation. 100 ml.", 16.90m, 40, soinsId),
-            new Product("Beurre de Karité Pur", "Beurre 100% naturel, nourrit en profondeur les cheveux secs et abîmés. 200 g.", 12.90m, 60, soinsId),
-            new Product("Pack Shampooing + Après-Shampooing", "Duo soins complets : nettoie, nourrit, fortifie, hydrate, démêle et protège. 250 ml + 200 ml.", 22.90m, 40, soinsId),
+            WithImage(new Product("Huile de Ricin 100% Pure", "Huile 100% pure pour stimuler la pousse et renforcer les racines. 60 ml.", 14.90m, 50, soinsId), "huile-ricin-pure.png"),
+            WithImage(new Product("Huile de Ricin & Romarin", "Huile fortifiante 100% naturelle, pousse et réparation. 100 ml.", 16.90m, 40, soinsId), "huile-ricin-romarin.png"),
+            WithImage(new Product("Beurre de Karité Pur", "Beurre 100% naturel, nourrit en profondeur les cheveux secs et abîmés. 200 g.", 12.90m, 60, soinsId), "beurre-karite.png"),
+            WithImage(new Product("Pack Shampooing + Après-Shampooing", "Duo soins complets : nettoie, nourrit, fortifie, hydrate, démêle et protège. 250 ml + 200 ml.", 22.90m, 40, soinsId), "pack-shampooing.png"),
 
             // -- Tissages (Raw Hair) --
-            new Product("Raw Hair Lisse", "Tissage 100% cheveux naturels, texture lisse, qualité premium.", 89.90m, 20, tissagesId, hairColor: "Naturel", hairLength: HairLength.Inches18, hairTexture: HairTexture.Straight),
-            new Product("Raw Hair Wavy", "Tissage 100% cheveux naturels, texture ondulée, doux et soyeux.", 94.90m, 20, tissagesId, hairColor: "Naturel", hairLength: HairLength.Inches20, hairTexture: HairTexture.BodyWave),
-            new Product("Raw Hair Curly", "Tissage 100% cheveux naturels, texture bouclée, sans enchevêtrement.", 99.90m, 20, tissagesId, hairColor: "Naturel", hairLength: HairLength.Inches18, hairTexture: HairTexture.Curly),
+            WithImage(new Product("Raw Hair Lisse", "Tissage 100% cheveux naturels, texture lisse, qualité premium.", 89.90m, 20, tissagesId, hairColor: "Naturel", hairLength: HairLength.Inches18, hairTexture: HairTexture.Straight), "raw-hair-lisse.png"),
+            WithImage(new Product("Raw Hair Wavy", "Tissage 100% cheveux naturels, texture ondulée, doux et soyeux.", 94.90m, 20, tissagesId, hairColor: "Naturel", hairLength: HairLength.Inches20, hairTexture: HairTexture.BodyWave), "raw-hair-wavy.png"),
+            WithImage(new Product("Raw Hair Curly", "Tissage 100% cheveux naturels, texture bouclée, sans enchevêtrement.", 99.90m, 20, tissagesId, hairColor: "Naturel", hairLength: HairLength.Inches18, hairTexture: HairTexture.Curly), "raw-hair-curly.png"),
 
             // -- Perruques --
-            new Product("Perruque Lissée Brun Foncé", "Perruque lace, texture lisse, brun foncé, rendu naturel et longueur généreuse.", 149.90m, 12, perruquesId, hairColor: "Brun foncé", hairLength: HairLength.Inches24, hairTexture: HairTexture.Straight, capSize: CapSize.Medium),
-            new Product("Perruque Curly Noire", "Perruque bouclée, volume naturel, noir profond.", 159.90m, 12, perruquesId, hairColor: "Noir", hairLength: HairLength.Inches20, hairTexture: HairTexture.Curly, capSize: CapSize.Medium),
-            new Product("Perruque Blonde Ondulée", "Perruque ondulée blond miel, effet lumineux.", 169.90m, 10, perruquesId, hairColor: "Blond", hairLength: HairLength.Inches24, hairTexture: HairTexture.BodyWave, capSize: CapSize.Large),
-            new Product("Perruque Ondulée Brune", "Perruque ondulée, brun foncé, effet volume et mouvement naturel.", 154.90m, 10, perruquesId, hairColor: "Brun foncé", hairLength: HairLength.Inches22, hairTexture: HairTexture.BodyWave, capSize: CapSize.Medium),
+            WithImage(new Product("Perruque Lissée Brun Foncé", "Perruque lace, texture lisse, brun foncé, rendu naturel et longueur généreuse.", 149.90m, 12, perruquesId, hairColor: "Brun foncé", hairLength: HairLength.Inches24, hairTexture: HairTexture.Straight, capSize: CapSize.Medium), "perruque-lissee-brun.png"),
+            WithImage(new Product("Perruque Curly Noire", "Perruque bouclée, volume naturel, noir profond.", 159.90m, 12, perruquesId, hairColor: "Noir", hairLength: HairLength.Inches20, hairTexture: HairTexture.Curly, capSize: CapSize.Medium), "perruque-curly-noire.png"),
+            WithImage(new Product("Perruque Blonde Ondulée", "Perruque ondulée blond miel, effet lumineux.", 169.90m, 10, perruquesId, hairColor: "Blond", hairLength: HairLength.Inches24, hairTexture: HairTexture.BodyWave, capSize: CapSize.Large), "perruque-blonde-ondulee.png"),
+            WithImage(new Product("Perruque Ondulée Brune", "Perruque ondulée, brun foncé, effet volume et mouvement naturel.", 154.90m, 10, perruquesId, hairColor: "Brun foncé", hairLength: HairLength.Inches22, hairTexture: HairTexture.BodyWave, capSize: CapSize.Medium), "perruque-ondulee-brune.png"),
 
             // -- Accessoires --
-            new Product("Bonnets / Wig Caps", "Lot de bonnets pour protéger vos cheveux et maintenir la perruque en place.", 6.90m, 100, accessoiresId),
-            new Product("Colle & Dissolvant à Lace", "Kit lace glue + remover pour une fixation fiable et un retrait en douceur.", 19.90m, 35, accessoiresId),
-            new Product("Peignes & Brosses", "Set pour démêler, lisser et préserver la qualité de votre perruque.", 14.90m, 40, accessoiresId),
-            new Product("Spray Fixateur (Edge Control)", "Pour des baby hairs bien plaqués et une coiffure longue durée. 100 ml.", 9.90m, 50, accessoiresId),
-            new Product("Tête / Mannequin d'Exposition", "Support idéal pour coiffer, ajuster et sécher votre perruque.", 24.90m, 25, accessoiresId),
-            new Product("Épingles & Pinces", "Lot d'épingles et pinces pour maintenir et coiffer facilement.", 7.90m, 60, accessoiresId),
+            WithImage(new Product("Bonnets / Wig Caps", "Lot de bonnets pour protéger vos cheveux et maintenir la perruque en place.", 6.90m, 100, accessoiresId), "bonnets-wig-caps.png"),
+            WithImage(new Product("Colle & Dissolvant à Lace", "Kit lace glue + remover pour une fixation fiable et un retrait en douceur.", 19.90m, 35, accessoiresId), "colle-dissolvant-lace.png"),
+            WithImage(new Product("Peignes & Brosses", "Set pour démêler, lisser et préserver la qualité de votre perruque.", 14.90m, 40, accessoiresId), "peignes-brosses.png"),
+            WithImage(new Product("Spray Fixateur (Edge Control)", "Pour des baby hairs bien plaqués et une coiffure longue durée. 100 ml.", 9.90m, 50, accessoiresId), "spray-edge-control.png"),
+            WithImage(new Product("Tête / Mannequin d'Exposition", "Support idéal pour coiffer, ajuster et sécher votre perruque.", 24.90m, 25, accessoiresId), "tete-mannequin.png"),
+            WithImage(new Product("Épingles & Pinces", "Lot d'épingles et pinces pour maintenir et coiffer facilement.", 7.90m, 60, accessoiresId), "epingles-pinces.png"),
         ];
 
         context.Products.AddRange(products);
