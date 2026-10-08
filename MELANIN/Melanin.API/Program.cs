@@ -58,11 +58,19 @@ builder.Services.AddDbContext<MelaninDbContext>(options =>
     }
 });
 
+
+// === CORS ===
+// Adresses du front autorisées à appeler l'API.
+// Local : appsettings.json (localhost:5173). Production : variable d'environnement Cors__AllowedOrigins__0.
+string[] allowedOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins")
+    .Get<string[]>() ?? ["http://localhost:5173"];
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFront", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
