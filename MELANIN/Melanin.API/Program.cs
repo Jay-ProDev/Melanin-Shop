@@ -15,9 +15,14 @@ using Scalar.AspNetCore;
 using System.Text;
 using System.Text.Json.Serialization;
 
+// Lit le fichier .env et ajoute ses valeurs aux variables d'environnement de l'API.
+DotNetEnv.Env.TraversePath().Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // === Database ===
+// Bases distantes (SQL Server / Postgres) : EnableRetryOnFailure() réessaie
+// automatiquement de se connecter (base serverless en réveil, coupure réseau).
 var provider = builder.Configuration.GetValue<string>("DatabaseProvider") ?? "SqlServer";
 
 builder.Services.AddDbContext<MelaninDbContext>(options =>
@@ -33,23 +38,39 @@ builder.Services.AddDbContext<MelaninDbContext>(options =>
     {
         options.UseNpgsql(
             builder.Configuration.GetConnectionString("Postgres"),
-            b => b.MigrationsAssembly("Melanin.Infrastructure.Database.Postgres")
+            b =>
+            {
+                b.MigrationsAssembly("Melanin.Infrastructure.Database.Postgres");
+                b.EnableRetryOnFailure();
+            }
         );
     }
     else
     {
         options.UseSqlServer(
             builder.Configuration.GetConnectionString("SqlServer"),
-            b => b.MigrationsAssembly("Melanin.Infrastructure.Database")
+            b =>
+            {
+                b.MigrationsAssembly("Melanin.Infrastructure.Database");
+                b.EnableRetryOnFailure();
+            }
         );
     }
 });
+
+
+// === CORS ===
+// Adresses du front autorisées à appeler l'API.
+// Local : appsettings.json (localhost:5173). Production : variable d'environnement Cors__AllowedOrigins__0.
+string[] allowedOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins")
+    .Get<string[]>() ?? ["http://localhost:5173"];
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFront", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod();
     });

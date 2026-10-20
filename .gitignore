@@ -487,3 +487,6 @@ MELANIN/Melanin.API/wwwroot/images/products/
 *.db
 *.db-shm
 *.db-wal
+
+# Build du front (généré par Vite, reconstruit par Azure)
+MELANIN/Melanin.Front/dist/

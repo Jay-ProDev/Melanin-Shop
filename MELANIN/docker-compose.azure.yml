@@ -1,0 +1,21 @@
+# Lance l'API en local (Docker), branchée sur la base Azure SQL en ligne.
+# Le premier lancement crée les tables ET fait le seed de la base de PRODUCTION.
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      # --- Admin (seeder) ---
+      - MELANIN_ADMIN_PASSWORD=${MELANIN_ADMIN_PASSWORD}
+      # --- Authentification JWT ---
+      - Token__Key=${Token__Key}
+      # --- Stripe ---
+      - Stripe__SecretKey=${Stripe__SecretKey}
+      - Stripe__WebhookSecret=${Stripe__WebhookSecret}
+      # --- Mailer ---
+      - Mailer__Password=${Mailer__Password}
+      # --- Base de données (Azure SQL) ---
+      - DatabaseProvider=SqlServer
+      - ConnectionStrings__SqlServer=${AZURE_SQL_CONNECTION_STRING}
