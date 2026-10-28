@@ -19,7 +19,7 @@ export default function ProductCard({ product }) {
         setCartMessage("✓");
         setCartCount((prev) => prev + 1);
       } else {
-        setCartMessage("! Erreur, Réessayez");
+        setCartMessage("!");
       }
     } else {
       addToLocalCart(product, 1);
@@ -68,7 +68,7 @@ export default function ProductCard({ product }) {
           {cartMessage === "✓"
             ? "✓ Ajouté !"
             : cartMessage === "!"
-              ? "Erreur"
+              ? "Erreur, Réessayez"
               : product.stockQuantity === 0
                 ? "Rupture de stock"
                 : "Ajouter au panier"}
