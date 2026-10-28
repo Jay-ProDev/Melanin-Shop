@@ -6,7 +6,7 @@ import { getCart } from "../services/cartItemService";
 import { getAddress, createAddress } from "../services/addressService";
 import { createOrder } from "../services/orderService";
 import { createPaymentSession } from "../services/paymentService";
-import { SubmitButton } from "../components/SubmitButton";
+import  SubmitButton  from "../components/SubmitButton";
 
 export default function Checkout() {
   const [token] = useAtom(tokenAtom);

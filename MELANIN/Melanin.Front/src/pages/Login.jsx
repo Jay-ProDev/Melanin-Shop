@@ -3,7 +3,7 @@ import { tokenAtom, getMemberIdFromToken } from "../store";
 import { authLogin } from "../services/memberService";
 import { Navigate, useSearchParams, useNavigate } from "react-router";
 import { useState } from "react";
-import { SubmitButton } from "../components/SubmitButton";
+import  SubmitButton  from "../components/SubmitButton";
 import {
   addToCart,
   clearLocalCart,
