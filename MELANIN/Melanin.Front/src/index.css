@@ -2,6 +2,13 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Tailwind v4 ne met plus le curseur main sur les boutons par défaut. On le remet pour tous les boutons actifs. */
+@layer base {
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
 @theme {
   --color-rose-gold: #e8c4b0;
   --color-rose-gold-dark: #d4a088;

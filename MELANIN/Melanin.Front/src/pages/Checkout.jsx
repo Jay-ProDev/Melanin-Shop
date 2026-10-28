@@ -6,6 +6,7 @@ import { getCart } from "../services/cartItemService";
 import { getAddress, createAddress } from "../services/addressService";
 import { createOrder } from "../services/orderService";
 import { createPaymentSession } from "../services/paymentService";
+import  SubmitButton  from "../components/SubmitButton";
 
 export default function Checkout() {
   const [token] = useAtom(tokenAtom);
@@ -16,7 +17,6 @@ export default function Checkout() {
   const [address, setAddress] = useState(null);
   const [useExistingAddress, setUseExistingAddress] = useState(true);
   const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -54,7 +54,6 @@ export default function Checkout() {
 
   const checkoutAction = async (formData) => {
     setError("");
-    setSubmitting(true);
 
     let shippingAddressId;
 
@@ -74,7 +73,6 @@ export default function Checkout() {
       const addressResult = await createAddress(addressData);
       if (!addressResult.success) {
         setError(addressResult.error);
-        setSubmitting(false);
         return;
       }
 
@@ -84,14 +82,12 @@ export default function Checkout() {
     const orderResult = await createOrder(shippingAddressId);
     if (!orderResult.success) {
       setError(orderResult.error);
-      setSubmitting(false);
       return;
     }
 
     const paymentResult = await createPaymentSession(orderResult.data.id);
     if (!paymentResult.success) {
       setError(paymentResult.error);
-      setSubmitting(false);
       return;
     }
 
@@ -309,18 +305,15 @@ export default function Checkout() {
 
         {/* ========== BOUTON CONFIRMER ========== */}
         <div className="flex justify-center">
-          <button
-            type="submit"
-            disabled={submitting}
-            className="px-12 py-4 text-[12px] tracking-[2px] cursor-pointer font-medium
-              text-beige bg-brown hover:bg-brown-dark
-              dark:text-[#0A0A0A] dark:bg-rose-gold dark:hover:bg-rose-gold-dark
-              disabled:opacity-40 disabled:cursor-not-allowed"
+          <SubmitButton
+            pendingText="TRAITEMENT..."
+            className="px-12 py-4 text-[12px] tracking-[2px] font-medium
+                      text-beige bg-brown hover:bg-brown-dark
+                      dark:text-[#0A0A0A] dark:bg-rose-gold dark:hover:bg-rose-gold-dark
+                      disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {submitting
-              ? "TRAITEMENT..."
-              : `PROCÉDER AU PAIEMENT - ${total.toFixed(2)} €`}
-          </button>
+            {`PROCÉDER AU PAIEMENT - ${total.toFixed(2)} €`}
+          </SubmitButton>
         </div>
       </form>
     </section>

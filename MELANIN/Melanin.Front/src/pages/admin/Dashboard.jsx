@@ -84,25 +84,43 @@ export default function Dashboard() {
             {products.length} produit(s)
           </p>
         </div>
-        <div className="flex gap-3">
-          <Link
-            to="/admin/products/create"
-            className="px-5 py-2 text-xs tracking-widest uppercase bg-brown dark:bg-rose-gold text-white dark:text-black rounded hover:opacity-90 transition-opacity"
-          >
-            + Produit
-          </Link>
-          <Link
-            to="/admin/orders"
-            className="px-5 py-2 text-xs tracking-widest uppercase border border-brown dark:border-rose-gold text-brown dark:text-rose-gold rounded hover:opacity-80 transition-opacity"
-          >
-            Commandes
-          </Link>
-          <Link
-            to="/admin/categories"
-            className="px-5 py-2 text-xs tracking-widest uppercase border border-brown dark:border-rose-gold text-brown dark:text-rose-gold rounded hover:opacity-80 transition-opacity"
-          >
-            Catégories
-          </Link>
+        <div className="flex items-stretch gap-6">
+          {/* Catalogue : ce que la boutique vend */}
+          <div className="flex flex-col gap-2">
+            <p className="text-[10px] tracking-[2px] uppercase text-brown/50 dark:text-rose-gold/50">
+              Catalogue
+            </p>
+            <div className="flex gap-3">
+              <Link
+                to="/admin/products/create"
+                className="px-5 py-2 text-xs tracking-widest uppercase bg-brown dark:bg-rose-gold text-white dark:text-black rounded hover:opacity-90 transition-opacity"
+              >
+                + Produit
+              </Link>
+              <Link
+                to="/admin/categories"
+                className="px-5 py-2 text-xs tracking-widest uppercase border border-brown dark:border-rose-gold text-brown dark:text-rose-gold rounded hover:opacity-80 transition-opacity"
+              >
+                Catégories
+              </Link>
+            </div>
+          </div>
+
+          {/* Séparateur vertical */}
+          <div className="w-px bg-beige-dark dark:bg-zinc-700" />
+
+          {/* Ventes : ce qui a été acheté */}
+          <div className="flex flex-col gap-2">
+            <p className="text-[10px] tracking-[2px] uppercase text-brown/50 dark:text-rose-gold/50">
+              Ventes
+            </p>
+            <Link
+              to="/admin/orders"
+              className="px-5 py-2 text-xs tracking-widest uppercase border border-brown dark:border-rose-gold text-brown dark:text-rose-gold rounded hover:opacity-80 transition-opacity"
+            >
+              Commandes
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -175,7 +193,7 @@ export default function Dashboard() {
                       >
                         −
                       </button>
-                      <span className="text-brown dark:text-rose-gold kw-8 text-center text-xs">
+                      <span className="text-brown dark:text-rose-gold w-8 text-center text-xs">
                         {p.stockQuantity}
                       </span>
                       <button

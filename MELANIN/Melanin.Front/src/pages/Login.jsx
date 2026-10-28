@@ -3,6 +3,7 @@ import { tokenAtom, getMemberIdFromToken } from "../store";
 import { authLogin } from "../services/memberService";
 import { Navigate, useSearchParams, useNavigate } from "react-router";
 import { useState } from "react";
+import  SubmitButton  from "../components/SubmitButton";
 import {
   addToCart,
   clearLocalCart,
@@ -102,14 +103,15 @@ export default function Login() {
                             dark:focus:border-rose-gold"
           />
         </div>
-        <button
-          type="submit"
-          className="mt-2 py-3 text-[12px] tracking-[2px]  cursor-pointer font-medium
-                        text-beige bg-brown hover:bg-brown-dark
-                        dark:text-[#0A0A0A] dark:bg-rose-gold dark:hover:bg-rose-gold-dark"
+        <SubmitButton
+          pendingText="CONNEXION..."
+          className="mt-2 py-3 text-[12px] tracking-[2px] font-medium
+                    text-beige bg-brown hover:bg-brown-dark
+                    dark:text-[#0A0A0A] dark:bg-rose-gold dark:hover:bg-rose-gold-dark
+                    disabled:opacity-40 disabled:cursor-not-allowed"
         >
           SE CONNECTER
-        </button>
+        </SubmitButton>
       </form>
     </div>
   );
