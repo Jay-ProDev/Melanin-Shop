@@ -40,11 +40,18 @@ export default function Navbar() {
     >
       <Link
         to="/"
-        className="font-serif text-[22px] tracking-[4px]
-                    text-brown dark:text-rose-gold"
+        className="flex items-center gap-3
+                  font-serif text-[22px] tracking-[4px]
+                  text-brown dark:text-rose-gold"
       >
+        <img
+          src="/melanin-favicon.svg"
+          alt=""
+          className="w-8 h-8 object-cover rounded-lg"
+        />
         MELANIN
       </Link>
+
       <div className="flex items-center gap-8">
         <Link
           to="/"
