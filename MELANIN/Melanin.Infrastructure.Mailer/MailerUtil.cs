@@ -2,11 +2,16 @@ using Melanin.Application.Interfaces.Utils;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
+using System.Globalization;
 
 namespace Melanin.Infrastructure.Mailer;
 
 public class MailerUtil : IMailerUtil
 {
+    /* Le conteneur Linux n'a pas de culture définie, donc "C" utiliserait la culture
+    invariante et afficherait "¤". La boutique vend en euros, on fixe donc fr-BE.*/
+    private static readonly CultureInfo PriceCulture = CultureInfo.GetCultureInfo("fr-BE");
+
     private readonly string _host;
     private readonly int _port;
     private readonly string _username;
@@ -52,7 +57,7 @@ public class MailerUtil : IMailerUtil
         string html = await LoadTemplateAsync("OrderConfirmedTemplate.html");
         html = html.Replace("{{FirstName}}", firstName)
                    .Replace("{{OrderId}}", orderId.ToString())
-                   .Replace("{{TotalPrice}}", totalPrice.ToString("C"));
+                   .Replace("{{TotalPrice}}", totalPrice.ToString("C", PriceCulture));
 
         BodyBuilder bodyBuilder = new BodyBuilder();
         bodyBuilder.TextBody = $"Ta commande #{orderId} a été confirmée.";
