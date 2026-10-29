@@ -1,3 +1,4 @@
+# Lance l'API en local (Docker) avec une base SQLite (simple fichier, aucun serveur de base à installer).
 services:
   api:
     build: .
@@ -5,5 +6,17 @@ services:
       - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      # --- Admin (seeder) ---
+      - MELANIN_ADMIN_PASSWORD=${MELANIN_ADMIN_PASSWORD}
+      # --- Authentification JWT ---
+      - Token__Key=${Token__Key}
+      # --- Stripe ---
+      - Stripe__SecretKey=${Stripe__SecretKey}
+      - Stripe__WebhookSecret=${Stripe__WebhookSecret}
+      # --- Mailer ---
+      - Mailer__Password=${Mailer__Password}
+      # --- Base de données (fichier SQLite) ---
+      - DatabaseProvider=Sqlite
     volumes:
+    # Bind mount : utilise le fichier SQLite du projet (le même que pour "dotnet run").
       - ./Melanin.API/MelaninDb.db:/app/MelaninDb.db
