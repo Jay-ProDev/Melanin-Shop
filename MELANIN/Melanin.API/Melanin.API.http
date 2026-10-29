@@ -1,6 +1,0 @@
-@Melanin.API_HostAddress = http://localhost:5077
-
-GET {{Melanin.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
