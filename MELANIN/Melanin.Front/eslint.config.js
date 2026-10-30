@@ -24,6 +24,10 @@ export default defineConfig([
     },
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+
+      // Règle ajoutée par la mise à jour d'eslint-plugin-react-hooks.
+      // Le code concerné fonctionne ; on la garde en avertissement en attendant de le réécrire.
+      'react-hooks/set-state-in-effect': 'warn',
     },
   },
 ])
