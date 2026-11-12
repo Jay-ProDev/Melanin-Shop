@@ -4,10 +4,17 @@ on:
   push:
     branches:
       - main
+    # Pour reconstruire le front que si le front (ou ce workflow) a changé.
+    paths:
+      - "MELANIN/Melanin.Front/**"
+      - ".github/workflows/azure-static-web-apps-white-sky-05841e90f.yml"
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
+    paths:
+      - "MELANIN/Melanin.Front/**"
+      - ".github/workflows/azure-static-web-apps-white-sky-05841e90f.yml"
 
 permissions:
   contents: read
@@ -19,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
         with:
           submodules: true
           lfs: false
