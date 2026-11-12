@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router";
 import { useAtom } from "jotai";
 import { tokenAtom } from "../store";
-import { getMyOrder } from "../services/orderService";
+import { getMyOrder, cancelMyOrder } from "../services/orderService";
 import { formatOrderStatus, getOrderStatusStyle } from "../utils/orderStatus";
 import { createPaymentSession } from "../services/paymentService";
 
@@ -13,6 +13,8 @@ export default function OrderDetail() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [actionError, setActionError] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     const loadOrder = async () => {
@@ -55,14 +57,37 @@ export default function OrderDetail() {
   // Format date JJ/MM/AAAA
   const orderDate = new Date(order.createdAt).toLocaleDateString("fr-FR");
 
+  const isPending = order.status === "Pending";
+  const isConfirmed = order.status === "Confirmed";
+  const isShipped = order.status === "Shipped";
+
   const handleResumePayment = async () => {
-    setError("");
+    setActionError("");
     const result = await createPaymentSession(order.id);
     if (!result.success) {
-      setError(result.error);
+      setActionError(result.error);
       return;
     }
     window.location.href = result.data.url;
+  };
+
+  // Annule une commande pas encore payée, puis recharge la commande
+  const handleCancel = async () => {
+    if (!confirm("Voulez-vous vraiment annuler cette commande ?")) {
+      return;
+    }
+    setActionError("");
+    setIsProcessing(true);
+    const result = await cancelMyOrder(order.id);
+    if (result.success) {
+      const reloaded = await getMyOrder(id);
+      if (reloaded.success) {
+        setOrder(reloaded.data);
+      }
+    } else {
+      setActionError(result.error);
+    }
+    setIsProcessing(false);
   };
 
   return (
@@ -181,48 +206,83 @@ export default function OrderDetail() {
           {order.totalPrice.toFixed(2)} €
         </p>
       </div>
-      
+
       {/* Bandeau pour les commandes Pending */}
-      {order.status === "Pending" && (
+      {isPending && (
         <div className="mb-8 px-6 py-4 bg-beige dark:bg-[#1A1A1A] border-l-2 border-gold dark:border-rose-gold">
           <p className="text-[13px] text-brown-dark dark:text-white mb-2">
             Cette commande est en attente de paiement.
           </p>
           <p className="text-[12px] text-brown-light dark:text-[#999]">
-            Reprenez le paiement pour finaliser votre commande, ou laissez-la en
-            attente.
+            Reprenez le paiement pour finaliser votre commande.
           </p>
         </div>
       )}
 
-      {/* Message d'aide pour annulation/modification */}
-      <div className="mb-8 px-6 py-4 bg-beige dark:bg-[#1A1A1A] border-l-2 border-gold dark:border-rose-gold">
-        <p className="text-[12px] text-brown-light dark:text-[#999]">
-          Pour annuler ou modifier cette commande, contactez notre service
-          client.
+      {/* Message d'aide : payée mais pas encore expédiée */}
+      {isConfirmed && (
+        <div className="mb-8 px-6 py-4 bg-beige dark:bg-[#1A1A1A] border-l-2 border-gold dark:border-rose-gold">
+          <p className="text-[12px] text-brown-light dark:text-[#999]">
+            Pour annuler ou modifier cette commande, contactez notre service
+            client.
+          </p>
+        </div>
+      )}
+
+      {/* Message pour une commande expédiée */}
+      {isShipped && (
+        <div className="mb-8 px-6 py-4 bg-beige dark:bg-[#1A1A1A] border-l-2 border-gold dark:border-rose-gold">
+          <p className="text-[12px] text-brown-light dark:text-[#999]">
+            Votre colis est en route. Pour toute question, contactez notre service
+            client.
+          </p>
+        </div>
+      )}
+
+      {/* Erreur d'action */}
+      {actionError && (
+        <p className="text-[13px] text-center mb-6 text-red-500">
+          {actionError}
         </p>
-      </div>
+      )}
+
       {/* Boutons d'action */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        {order.status === "Pending" && (
+        {isPending && (
           <button
             onClick={handleResumePayment}
-            className="px-8 py-3 text-[12px] tracking-[2px] text-center cursor-pointer font-medium
+            disabled={isProcessing}
+            className="px-8 py-3 text-[12px] tracking-[2px] text-center font-medium
               text-beige bg-brown hover:bg-brown-dark
-              dark:text-[#0A0A0A] dark:bg-rose-gold dark:hover:bg-rose-gold-dark"
+              dark:text-[#0A0A0A] dark:bg-rose-gold dark:hover:bg-rose-gold-dark
+              disabled:opacity-40 disabled:cursor-not-allowed"
           >
             REPRENDRE LE PAIEMENT
           </button>
         )}
         <Link
           to="/profile"
-          className="px-8 py-3 text-[12px] tracking-[2px] text-center cursor-pointer font-medium border
+          className="px-8 py-3 text-[12px] tracking-[2px] text-center font-medium border
             text-brown border-brown hover:bg-beige
             dark:text-rose-gold dark:border-rose-gold dark:hover:bg-[#1A1A1A]"
         >
           RETOUR AU PROFIL
         </Link>
       </div>
+
+      {/* Annulation : seulement si pas encore payée */}
+      {isPending && (
+        <div className="text-center mt-8">
+          <button
+            onClick={handleCancel}
+            disabled={isProcessing}
+            className="text-[12px] text-red-500 underline hover:text-red-600
+              disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Annuler cette commande
+          </button>
+        </div>
+      )}
     </section>
   );
 }

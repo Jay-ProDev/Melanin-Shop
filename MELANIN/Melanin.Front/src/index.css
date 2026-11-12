@@ -2,14 +2,19 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Tailwind v4 ne met plus le curseur main sur les boutons par défaut. On le remet pour tous les boutons actifs. */
 @layer base {
+  /* Défilement en douceur vers les ancres (ex. bouton "Notre histoire") */
+  html {
+    scroll-behavior: smooth;
+  }
+  /* Tailwind v4 ne met plus le curseur main sur les boutons par défaut. On le remet pour tous les boutons actifs. */
   button:not(:disabled) {
     cursor: pointer;
   }
 }
 
 @theme {
+  /* Mes couleurs */
   --color-rose-gold: #e8c4b0;
   --color-rose-gold-dark: #d4a088;
   --color-rose-gold-light: #f0d5c5;
@@ -25,4 +30,30 @@
   --color-beige: #f5f0eb;
   --color-beige-dark: #e0d5c8;
   --color-beige-light: #faf6f1;
+
+  /* Apparition : le texte glisse de bas en haut en devenant visible */
+  --animate-fade-up: fade-up 0.8s ease-out both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Scintillement : un dégradé de couleurs qui défile dans le texte */
+  --animate-shimmer: shimmer 4s linear infinite;
+
+  @keyframes shimmer {
+    from {
+      background-position: 0% center;
+    }
+    to {
+      background-position: 200% center;
+    }
+  }
 }

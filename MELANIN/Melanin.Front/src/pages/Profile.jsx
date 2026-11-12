@@ -444,7 +444,7 @@ export default function Profile() {
       {/* ============================================ */}
       {/* Section Mes commandes (pleine largeur)       */}
       {/* ============================================ */}
-      <div className="w-full max-w-[920px]">
+      <div className="w-full max-w-[920px] pt-16 border-t border-gold/40 dark:border-rose-gold/30">
         <h2 className="font-serif text-[26px] text-brown-dark dark:text-white mb-2">
           Mes commandes
         </h2>
@@ -470,7 +470,11 @@ export default function Profile() {
               {orders.slice(0, visibleCount).map((order) => (
                 <div
                   key={order.id}
-                  className="border border-beige-dark dark:border-[#2A2A2A] p-5 flex flex-col gap-3"
+                  className={`border p-5 flex flex-col gap-3 ${
+                    order.status === "Pending"
+                      ? "border-gold dark:border-rose-gold"
+                      : "border-beige-dark dark:border-[#2A2A2A]"
+                  }`}
                 >
                   {/* En-tête : numéro + badge statut */}
                   <div className="flex justify-between items-center">
@@ -488,6 +492,13 @@ export default function Profile() {
                   <p className="text-[12px] text-brown-light dark:text-[#999]">
                     {new Date(order.createdAt).toLocaleDateString("fr-FR")}
                   </p>
+
+                  {/* Commande pas encore payée */}
+                  {order.status === "Pending" && (
+                    <p className="text-[12px] font-medium text-gold dark:text-rose-gold">
+                      Paiement à finaliser
+                    </p>
+                  )}
 
                   {/* Articles (3 max + "et X autres") */}
                   <div className="flex flex-col gap-1 pt-2 border-t border-beige-dark dark:border-[#2A2A2A]">

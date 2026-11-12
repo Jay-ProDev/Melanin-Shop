@@ -66,7 +66,7 @@ export default function AdminOrderDetail() {
   };
 
   const handleCancel = async () => {
-    if (!confirm("Êtes-vous sûr de vouloir annuler cette commande ?")) {
+    if (!confirm("Êtes-vous sûr de vouloir annuler cette commande ? Cette action est définitive.")) {
       return;
     }
     setActionError("");
@@ -106,6 +106,14 @@ export default function AdminOrderDetail() {
 
   const orderDate = new Date(order.createdAt).toLocaleDateString("fr-FR");
 
+  // Étapes d'une commande dans l'ordre (-1 si annulée)
+  const steps = ["Pending", "Confirmed", "Shipped", "Delivered"];
+  const currentStep = steps.indexOf(order.status);
+
+  const isPending = order.status === "Pending";
+  const isConfirmed = order.status === "Confirmed";
+  const isShipped = order.status === "Shipped";
+
   return (
     <section className="max-w-3xl mx-auto px-6 py-16">
       {/* En-tête */}
@@ -116,7 +124,7 @@ export default function AdminOrderDetail() {
       </div>
 
       {/* Infos en-tête : numéro, date, statut */}
-      <div className="flex justify-center gap-12 mb-12 pb-8 border-b border-beige-dark dark:border-[#2A2A2A]">
+      <div className="flex justify-center gap-12 mb-10 pb-8 border-b border-beige-dark dark:border-[#2A2A2A]">
         <div className="text-center">
           <p className="text-[11px] tracking-[2px] mb-2 text-brown-light dark:text-[#999]">
             COMMANDE N°
@@ -144,6 +152,106 @@ export default function AdminOrderDetail() {
           </span>
         </div>
       </div>
+
+      {/* Suivi de la commande */}
+      {currentStep === -1 ? (
+        <p className="text-center text-[13px] mb-12 text-red-500">
+          Cette commande a été annulée.
+        </p>
+      ) : (
+        <div className="flex items-start mb-12">
+          {steps.map((step, index) => (
+            <div key={step} className="flex items-start flex-1 last:flex-none">
+              <div className="flex flex-col items-center gap-2">
+                <span
+                  className={`w-4 h-4 rounded-full border-2 ${
+                    index <= currentStep
+                      ? "bg-gold border-gold dark:bg-rose-gold dark:border-rose-gold"
+                      : "border-beige-dark dark:border-[#2A2A2A]"
+                  }`}
+                />
+                <span
+                  className={`text-[10px] tracking-[1px] uppercase whitespace-nowrap ${
+                    index === currentStep
+                      ? "font-semibold text-brown-dark dark:text-white"
+                      : "text-brown-light dark:text-[#777]"
+                  }`}
+                >
+                  {formatOrderStatus(step)}
+                </span>
+              </div>
+              {/* Trait entre les étapes, sauf après la dernière */}
+              {index < steps.length - 1 && (
+                <div
+                  className={`flex-1 h-px mt-2 mx-2 ${
+                    index < currentStep
+                      ? "bg-gold dark:bg-rose-gold"
+                      : "bg-beige-dark dark:bg-[#2A2A2A]"
+                  }`}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Prochaine étape selon le statut */}
+      {(isPending || isConfirmed || isShipped) && (
+        <div className="mb-12 px-6 py-6 bg-beige dark:bg-[#1A1A1A] border-l-2 border-gold dark:border-rose-gold">
+          <h2 className="font-serif text-[18px] mb-2 text-brown-dark dark:text-white">
+            Prochaine étape
+          </h2>
+
+          {isPending && (
+            <p className="text-[13px] text-brown-light dark:text-[#999]">
+              En attente du paiement du client.
+            </p>
+          )}
+
+          {isConfirmed && (
+            <>
+              <p className="text-[13px] mb-5 text-brown-light dark:text-[#999]">
+                La commande est payée. Préparez le colis.
+              </p>
+              <button
+                onClick={handleShip}
+                disabled={isProcessing}
+                className="px-6 py-3 text-[12px] tracking-[2px] font-medium
+                  text-beige bg-brown hover:bg-brown-dark
+                  dark:text-[#0A0A0A] dark:bg-rose-gold dark:hover:bg-rose-gold-dark
+                  disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {isProcessing ? "TRAITEMENT..." : "MARQUER COMME EXPÉDIÉE"}
+              </button>
+            </>
+          )}
+
+          {isShipped && (
+            <>
+              <p className="text-[13px] mb-5 text-brown-light dark:text-[#999]">
+                En cours de livraison. Confirmez la livraison quand le colis est arrivé à destination.
+              </p>
+              <button
+                onClick={handleDeliver}
+                disabled={isProcessing}
+                className="px-6 py-3 text-[12px] tracking-[2px] font-medium
+                  text-beige bg-brown hover:bg-brown-dark
+                  dark:text-[#0A0A0A] dark:bg-rose-gold dark:hover:bg-rose-gold-dark
+                  disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {isProcessing ? "TRAITEMENT..." : "MARQUER COMME LIVRÉE"}
+              </button>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* Erreur d'action */}
+      {actionError && (
+        <p className="text-[13px] text-center mb-6 text-red-500">
+          {actionError}
+        </p>
+      )}
 
       {/* Section CLIENT */}
       <div className="mb-12">
@@ -236,71 +344,31 @@ export default function AdminOrderDetail() {
         </p>
       </div>
 
-      {/* Actions selon le statut */}
-      {(order.status === "Pending" ||
-        order.status === "Confirmed" ||
-        order.status === "Shipped") && (
-        <div className="mb-12 px-6 py-6 bg-beige dark:bg-[#1A1A1A] border-l-2 border-gold dark:border-rose-gold">
-          <h2 className="font-serif text-[18px] mb-4 text-brown-dark dark:text-white">
-            Actions
-          </h2>
-          <div className="flex flex-wrap gap-3">
-            {/* Bouton EXPÉDIER */}
-            {(order.status === "Pending" || order.status === "Confirmed") && (
-              <button
-                onClick={handleShip}
-                disabled={isProcessing}
-                className="px-6 py-3 text-[12px] tracking-[2px] cursor-pointer font-medium
-                  text-beige bg-brown hover:bg-brown-dark
-                  dark:text-[#0A0A0A] dark:bg-rose-gold dark:hover:bg-rose-gold-dark
-                  disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                {isProcessing ? "TRAITEMENT..." : "EXPÉDIER"}
-              </button>
-            )}
-
-            {/* Bouton LIVRER */}
-            {order.status === "Shipped" && (
-              <button
-                onClick={handleDeliver}
-                disabled={isProcessing}
-                className="px-6 py-3 text-[12px] tracking-[2px] cursor-pointer font-medium
-                  text-beige bg-brown hover:bg-brown-dark
-                  dark:text-[#0A0A0A] dark:bg-rose-gold dark:hover:bg-rose-gold-dark
-                  disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                {isProcessing ? "TRAITEMENT..." : "LIVRER"}
-              </button>
-            )}
-
-            {/* Bouton ANNULER */}
-            {(order.status === "Pending" || order.status === "Confirmed") && (
-              <button
-                onClick={handleCancel}
-                disabled={isProcessing}
-                className="px-6 py-3 text-[12px] tracking-[2px] cursor-pointer font-medium border
-                  text-red-500 border-red-500 hover:bg-red-500 hover:text-white
-                  disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                {isProcessing ? "TRAITEMENT..." : "ANNULER"}
-              </button>
-            )}
-          </div>
+      {/* Annulation : en attente ou payée, tant que le colis n'est pas parti */}
+      {(isPending || isConfirmed) && (
+        <div className="text-center mb-12">
+          <button
+            onClick={handleCancel}
+            disabled={isProcessing}
+            className="text-[12px] text-red-500 underline hover:text-red-600
+              disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Annuler cette commande
+          </button>
+          {isConfirmed && (
+            <p className="text-[11px] mt-2 text-brown-light dark:text-[#777]">
+              Le remboursement n'est pas automatique : pensez à rembourser le
+              client depuis le tableau de bord Stripe.
+            </p>
+          )}
         </div>
-      )}
-
-      {/* Erreur d'action */}
-      {actionError && (
-        <p className="text-[13px] text-center mb-6 text-red-500">
-          {actionError}
-        </p>
       )}
 
       {/* Bouton retour */}
       <div className="flex justify-center">
         <Link
           to="/admin/orders"
-          className="px-8 py-3 text-[12px] tracking-[2px] text-center cursor-pointer font-medium border
+          className="px-8 py-3 text-[12px] tracking-[2px] text-center font-medium border
             text-brown border-brown hover:bg-beige
             dark:text-rose-gold dark:border-rose-gold dark:hover:bg-[#1A1A1A]"
         >

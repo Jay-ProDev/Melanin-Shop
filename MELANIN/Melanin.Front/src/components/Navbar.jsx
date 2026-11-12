@@ -70,9 +70,7 @@ export default function Navbar() {
 
         {/* Icône panier */}
         <Link to="/cart" className="relative hover:opacity-70">
-          <span className="text-[20px] text-brown-light dark:text-[#999]">
-            🛍
-          </span>
+          <span className="text-[20px]">🛒</span>
           {cartCount > 0 && (
             <span
               className="absolute -top-2 -right-2 text-[10px] w-4 h-4 flex items-center justify-center rounded-full
@@ -85,10 +83,11 @@ export default function Navbar() {
 
         <button
           onClick={toggleTheme}
-          className="text-[13px] cursor-pointer hover:opacity-70
-                        text-brown-light dark:text-[#999]"
+          aria-label={theme === "dark" ? "Passer en mode clair" : "Passer en mode sombre"}
+          title={theme === "dark" ? "Mode clair" : "Mode sombre"}
+          className="text-[16px] hover:opacity-70"
         >
-          {theme === "dark" ? "☀" : "☾"}
+          {theme === "dark" ? "☀️" : "🌚"}
         </button>
 
         {token ? (

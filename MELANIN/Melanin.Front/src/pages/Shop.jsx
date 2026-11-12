@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { getAllActiveProducts } from "../services/productService";
 import { getAllCategories } from "../services/categoryService";
 import ProductCard from "../components/ProductCard";
+import MiniCart from "../components/MiniCart";
 
 export default function Shop() {
   const [products, setProducts] = useState([]);
@@ -78,7 +79,8 @@ export default function Shop() {
       </div>
 
       <div className="flex gap-10">
-        <aside className="w-48 shrink-0">
+        {/* Catégories : suivent le défilement (sticky) */}
+        <aside className="w-44 shrink-0 self-start sticky top-24">
           <h2 className="font-serif text-sm tracking-widest uppercase text-brown dark:text-rose-gold mb-4">
             Catégories
           </h2>
@@ -106,6 +108,7 @@ export default function Shop() {
           )}
         </aside>
 
+        {/* Produits */}
         <div className="flex-1">
           {loading ? (
             <p className="text-center text-brown/60 dark:text-rose-gold/60 text-sm tracking-widest uppercase py-20">
@@ -125,6 +128,11 @@ export default function Shop() {
             </div>
           )}
         </div>
+
+        {/* Mini-panier : grands écrans uniquement, suit le défilement */}
+        <aside className="hidden lg:block w-52 shrink-0 self-start sticky top-24">
+          <MiniCart />
+        </aside>
       </div>
     </section>
   );

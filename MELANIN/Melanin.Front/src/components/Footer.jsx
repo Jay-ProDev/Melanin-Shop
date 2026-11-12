@@ -13,7 +13,7 @@ export default function Footer() {
                 border-beige-dark dark:border-[#1F1F1F]"
       >
         <div
-          className="flex flex-col items-center py-6 border-r
+          className="flex flex-col items-center py-2 border-r
                     border-beige-dark dark:border-[#1F1F1F]"
         >
           <p
@@ -30,7 +30,7 @@ export default function Footer() {
           </p>
         </div>
         <div
-          className="flex flex-col items-center py-6 border-r
+          className="flex flex-col items-center py-2 border-r
                     border-beige-dark dark:border-[#1F1F1F]"
         >
           <p
@@ -47,7 +47,7 @@ export default function Footer() {
           </p>
         </div>
         <div
-          className="flex flex-col items-center py-6 border-r
+          className="flex flex-col items-center py-2 border-r
                     border-beige-dark dark:border-[#1F1F1F]"
         >
           <p
@@ -63,7 +63,7 @@ export default function Footer() {
             Sous 14 jours
           </p>
         </div>
-        <div className="flex flex-col items-center py-6">
+        <div className="flex flex-col items-center py-2">
           <p
             className="text-[11px] tracking-[2px] font-medium
                         text-brown-dark dark:text-white"
@@ -81,15 +81,17 @@ export default function Footer() {
 
       {/* Contenu principal */}
       <div
-        className="max-w-[1100px] mx-auto py-10 px-10
+        className="max-w-[1100px] mx-auto py-3 px-10
                   flex justify-between items-stretch"
       >
-        <div className="flex gap-6">
+          {/* Logo */}
           <img
             src="/melanin-favicon.svg"
             alt="Melanin"
-            className="w-28 h-28 object-cover rounded-xl self-center"
+            className="w-20 h-20 object-cover rounded-xl self-center"
           />
+
+          {/* MELANIN + texte + réseaux */}
           <div>
             <Link
               to="/"
@@ -172,10 +174,10 @@ export default function Footer() {
               </a>
             </div>
           </div>
-        </div> 
-
+        
+          {/* Colonnes de liens */}
           <div className="flex gap-14">
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
               <p className="text-[11px] tracking-[2px] text-gold dark:text-rose-gold">
                 BOUTIQUE
               </p>
@@ -188,7 +190,7 @@ export default function Footer() {
               </Link>
             </div>
 
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
               <p
                 className="text-[11px] tracking-[2px]
                               text-gold dark:text-rose-gold"
@@ -225,7 +227,7 @@ export default function Footer() {
               </Link>
             </div>
 
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
               <p
                 className="text-[11px] tracking-[2px]
                               text-gold dark:text-rose-gold"
@@ -248,7 +250,7 @@ export default function Footer() {
 
       {/* Paiement + Copyright */}
       <div
-        className="border-t py-5 px-10
+        className="border-t py-2 px-10
                 border-beige-dark dark:border-[#1A1A1A]"
       >
         <div className="max-w-[1100px] mx-auto flex justify-between items-center">
