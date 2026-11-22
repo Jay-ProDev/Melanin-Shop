@@ -81,8 +81,7 @@ export default function Footer() {
 
       {/* Contenu principal */}
       <div
-        className="max-w-[1100px] mx-auto py-3 px-10
-                  flex justify-between items-stretch"
+        className="py-3 px-10 flex items-stretch gap-16"
       >
           {/* Logo */}
           <img
@@ -176,7 +175,7 @@ export default function Footer() {
           </div>
         
           {/* Colonnes de liens */}
-          <div className="flex gap-14">
+          <div className="flex gap-24 ml-auto">
             <div className="flex flex-col gap-2">
               <p className="text-[11px] tracking-[2px] text-gold dark:text-rose-gold">
                 BOUTIQUE
@@ -253,7 +252,7 @@ export default function Footer() {
         className="border-t py-2 px-10
                 border-beige-dark dark:border-[#1A1A1A]"
       >
-        <div className="max-w-[1100px] mx-auto flex justify-between items-center">
+        <div className="flex justify-between items-center">
           <p
             className="text-[11px] tracking-[1px]
                         text-brown-light dark:text-[#444]"
